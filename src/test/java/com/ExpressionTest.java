@@ -1,29 +1,75 @@
 package com;
 
 import com.evaluator.expression.BinaryExpression;
-import com.evaluator.expression.LogicalExpression;
+import com.evaluator.expression.ConstantExpression;
+import com.evaluator.expression.Expression;
 import com.evaluator.expression.TernaryExpression;
-import com.evaluator.expression.ValueExpression;
-import com.evaluator.operator.arithmetic.Division;
-import com.evaluator.operator.arithmetic.Min;
-import com.evaluator.operator.arithmetic.Multiplication;
-import com.evaluator.operator.arithmetic.Subtraction;
-import com.evaluator.operator.logical.GreaterThan;
+import com.evaluator.operator.*;
+import com.evaluator.visitor.ExpressionVisitor;
+import com.evaluator.visitor.Visitor;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author shrikrushna on 2020-04-11
  */
 public class ExpressionTest {
 
-//    @Test
-//    public void testSimpleBinaryExpression() {
-//        BinaryExpression<Double, Double> binaryExpression = new BinaryExpression<>(new Addition<>(), new ValueExpression<>(1.0), new ValueExpression<>(2.0));
-//        double eval = binaryExpression.evaluate();
-//        assertEquals(3.0, eval, 0.0);
-//    }
+    @Test
+    public void testSimpleBinaryExpression() {
+
+        Visitor<String> visitor = new ExpressionVisitor<>();
+        Expression val1 = new ConstantExpression("a");
+        Expression val2 = new ConstantExpression("b");
+        Expression val3 = new ConstantExpression("c");
+        Expression val4 = new ConstantExpression("d");
+
+        BinaryExpression binaryExpression1 = new BinaryExpression(new Addition(), val1, val2);
+        BinaryExpression binaryExpression2 = new BinaryExpression(new Addition(), val3, val4);
+
+        BinaryExpression binaryExpression = new BinaryExpression(new Addition(), binaryExpression1, binaryExpression2);
+        String accept = binaryExpression.accept(visitor);
+        System.out.println("accept = " + accept);
+    }
+
+    @Test
+    public void testSimpleAddition() {
+        Visitor<Double> visitor = new ExpressionVisitor<>();
+        Expression val1 = new ConstantExpression(1);
+        Expression val2 = new ConstantExpression(1.5);
+
+        BinaryExpression binaryExpression1 = new BinaryExpression(new Addition(), val1, val2);
+
+        Double accept = binaryExpression1.accept(visitor);
+        System.out.println("accept = " + accept);
+    }
+
+    @Test
+    public void testLogicalBinaryExpression() {
+
+        Visitor<Boolean> visitor = new ExpressionVisitor<>();
+        Expression val1 = new ConstantExpression(1);
+        Expression val2 = new ConstantExpression(2);
+        Expression val3 = new ConstantExpression("3");
+        Expression val4 = new ConstantExpression("4");
+
+        BinaryExpression binaryExpression1 = new BinaryExpression(new GreaterThan(), val1, val2);
+
+        Boolean accept = binaryExpression1.accept(visitor);
+        System.out.println("accept = " + accept);
+    }
+
+    @Test
+    public void testTernaryExpression() {
+        Visitor<Integer> visitor = new ExpressionVisitor<>();
+        Expression val1 = new ConstantExpression(1);
+        Expression val2 = new ConstantExpression(2);
+        BinaryExpression binaryExpression1 = new BinaryExpression(new GreaterThan(), val2, val1);
+        TernaryExpression ternaryExpression = new TernaryExpression(binaryExpression1, val1, val2);
+
+        Integer accept = ternaryExpression.accept(visitor);
+
+        System.out.println("accept = " + accept);
+    }
 //
 //    @Test
 //    public void testSimpleBooleanExpression() {
@@ -56,18 +102,18 @@ public class ExpressionTest {
     @Test
     public void whenSalaryIsGreaterThanSlab1ThenComputeTax() {
         double salary = 400000.00;
-        TernaryExpression<Double, Double> evaluate = new TernaryExpression<>(
-                new LogicalExpression<>(new GreaterThan<>(), new ValueExpression<>(250001.00), new ValueExpression<>(salary))
-                , new ValueExpression<>(0.00)
-                , new BinaryExpression<>(new Multiplication<>()
-                , new BinaryExpression<>(new Min<>()
-                , new ValueExpression<>(250000.00)
-                , new BinaryExpression<>(new Subtraction<>(), new ValueExpression<>(salary), new ValueExpression<>(250000.00))
-        )
-                , new BinaryExpression<>(new Division<>(), new ValueExpression<>(5.00), new ValueExpression<>(100.00))
-        )
+        TernaryExpression evaluate = new TernaryExpression(
+                new BinaryExpression(new GreaterThan(), new ConstantExpression(250001.00), new ConstantExpression(salary))
+                , new ConstantExpression(0.00)
+                , new BinaryExpression(new Multiplication()
+                , new BinaryExpression(new Min(), new ConstantExpression(250000.00), new BinaryExpression(new Subtraction(), new ConstantExpression(salary), new ConstantExpression(250000.00)))
+                , new BinaryExpression(new Division(), new ConstantExpression(5.00), new ConstantExpression(100.00)))
         );
-        double eval = evaluate.evaluate();
-        assertEquals(0, eval, 0.0);
+
+        Visitor<Double> visitor = new ExpressionVisitor<>();
+        Double visit = visitor.visit(evaluate);
+        System.out.println("visit = " + visit);
+//        double eval = evaluate.evaluate();
+//        assertEquals(0, eval, 0.0);
     }
 }

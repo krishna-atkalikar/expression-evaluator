@@ -1,31 +1,37 @@
 package com.evaluator.expression;
 
 import com.evaluator.operator.Operator;
+import com.evaluator.visitor.Visitor;
 
 /**
  * @author shrikrushna on 2020-04-11
  */
-public class BinaryExpression<T, R> extends Expression<T, R> {
+public class BinaryExpression extends Expression {
 
-    private Operator<T, R> op;
-    private Expression<T, R> left;
-    private Expression<T, R> right;
+    private Operator operator;
+    private Expression left;
+    private Expression right;
 
-    public BinaryExpression(Operator<T, R> op, Expression<T, R> left, Expression<T, R> right) {
-        this.op = op;
+    public BinaryExpression(Operator operator, Expression left, Expression right) {
+
         this.left = left;
         this.right = right;
+        this.operator = operator;
     }
 
-    public Expression<T, R> getLeft() {
+    public Expression getLeft() {
         return left;
     }
 
-    public Expression<T, R> getRight() {
+    public Expression getRight() {
         return right;
     }
 
-    public R evaluate() {
-        return op.visit(this);
+    public Operator getOperator() {
+        return operator;
+    }
+
+    @Override public <T> T accept(Visitor<T> visitor) {
+        return visitor.visit(this);
     }
 }

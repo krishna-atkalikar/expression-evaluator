@@ -15,10 +15,14 @@ public class ConstantExpression extends Expression {
     }
 
     public Object getValue() {
+        if (value instanceof Integer || value instanceof Long) {
+            return Double.valueOf(value.toString());
+        }
         return value;
     }
 
-    @Override public <T> T accept(Visitor<T> visitor) {
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(this);
     }
 }

@@ -27,7 +27,9 @@ public class Operators {
         binaryOperators.put(OperationType.SUBTRACT_DAYS_FROM_DATE, (l, r) -> ((LocalDate) l).minusDays(Integer.valueOf(r.toString())));
 
         binaryOperators.put(OperationType.LT, (l, r) -> Double.valueOf(l.toString()) < Double.valueOf(r.toString()));
+        binaryOperators.put(OperationType.LTE, (l, r) -> Double.valueOf(l.toString()) <= Double.valueOf(r.toString()));
         binaryOperators.put(OperationType.GT, (l, r) -> Double.valueOf(l.toString()) > Double.valueOf(r.toString()));
+        binaryOperators.put(OperationType.GTE, (l, r) -> Double.valueOf(l.toString()) >= Double.valueOf(r.toString()));
         binaryOperators.put(OperationType.EQ, (l, r) -> Double.valueOf(l.toString()).equals(Double.valueOf(r.toString())));
         binaryOperators.put(OperationType.NEQ, (l, r) -> !Double.valueOf(l.toString()).equals(Double.valueOf(r.toString())));
 

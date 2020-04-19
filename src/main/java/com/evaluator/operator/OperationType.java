@@ -15,7 +15,9 @@ public enum OperationType {
     SUBTRACT_DAYS_FROM_DATE,
 
     LT,
+    LTE,
     GT,
+    GTE,
     EQ,
     NEQ,
 

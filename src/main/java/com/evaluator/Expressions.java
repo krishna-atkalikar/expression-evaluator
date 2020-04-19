@@ -42,8 +42,16 @@ public class Expressions {
         return new BinaryExpression(left, right, OperationType.LT);
     }
 
+    public static Expression lte(Expression left, Expression right) {
+        return new BinaryExpression(left, right, OperationType.LTE);
+    }
+
     public static Expression gt(Expression left, Expression right) {
         return new BinaryExpression(left, right, OperationType.GT);
+    }
+
+    public static Expression gte(Expression left, Expression right) {
+        return new BinaryExpression(left, right, OperationType.GTE);
     }
 
     public static Expression eq(Expression left, Expression right) {

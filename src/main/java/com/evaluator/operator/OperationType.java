@@ -12,7 +12,7 @@ public enum OperationType {
 
     DATE_DIFFERENCE,
     ADD_DAYS_TO_DATE,
-    SUBTRACT_DAYS_TO_DATE,
+    SUBTRACT_DAYS_FROM_DATE,
 
     LT,
     GT,
@@ -25,7 +25,9 @@ public enum OperationType {
 
     IF,
     POWER,
+    MIN,
     FLOOR,
     CEILING,
+
 
 }

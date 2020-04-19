@@ -1,13 +1,11 @@
-package com.evaluator.operator;
+package com.evaluator.operator.arithmetic;
+
+import com.evaluator.operator.Operator;
 
 /**
  * @author shrikrushna on 2020-04-18
  */
 public class Addition extends Operator {
-
-    public Double doAddition(Object left, Object right) {
-        return Double.valueOf(left.toString()) + Double.valueOf(right.toString());
-    }
 
     public Integer doIntegerAddition(Integer left, Integer right) {
         return left + right;

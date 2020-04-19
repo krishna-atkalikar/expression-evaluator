@@ -4,15 +4,29 @@ import com.evaluator.expression.BinaryExpression;
 import com.evaluator.expression.ConstantExpression;
 import com.evaluator.expression.Expression;
 import com.evaluator.expression.TernaryExpression;
-import com.evaluator.operator.*;
+import com.evaluator.operator.OperationType;
+import com.evaluator.operator.arithmetic.Addition;
+import com.evaluator.operator.arithmetic.Division;
+import com.evaluator.operator.arithmetic.Multiplication;
+import com.evaluator.operator.arithmetic.Subtraction;
+import com.evaluator.operator.date.DateDifference;
+import com.evaluator.operator.function.Min;
+import com.evaluator.operator.logical.GreaterThan;
 import com.evaluator.visitor.ExpressionVisitor;
 import com.evaluator.visitor.Visitor;
 import org.junit.Test;
+
+import java.util.Date;
 
 /**
  * @author shrikrushna on 2020-04-11
  */
 public class ExpressionTest {
+
+    @Test
+    public void and() {
+        boolean v = false;
+    }
 
     @Test
     public void testSimpleBinaryExpression() {
@@ -37,7 +51,7 @@ public class ExpressionTest {
         Expression val1 = new ConstantExpression(1);
         Expression val2 = new ConstantExpression(1.5);
 
-        BinaryExpression binaryExpression1 = new BinaryExpression(new Addition(), val1, val2);
+        BinaryExpression binaryExpression1 = new BinaryExpression(val1, val2, OperationType.ADD);
 
         Double accept = binaryExpression1.accept(visitor);
         System.out.println("accept = " + accept);
@@ -115,5 +129,18 @@ public class ExpressionTest {
         System.out.println("visit = " + visit);
 //        double eval = evaluate.evaluate();
 //        assertEquals(0, eval, 0.0);
+    }
+
+    @Test
+    public void testDate() {
+        BinaryExpression dateExpression = new BinaryExpression(new DateDifference(), new ConstantExpression(new Date()), new ConstantExpression(1));
+//        BinaryExpression dateExpression = new BinaryExpression(new ConstantExpression(new Date()), new ConstantExpression(1), (date, days) -> new DateTime(date).plusDays(Integer.valueOf(days.toString())).toDate());
+
+
+        Visitor<Date> visitor = new ExpressionVisitor<>();
+
+        Date accept = dateExpression.accept(visitor);
+
+        System.out.println("accept = " + accept);
     }
 }

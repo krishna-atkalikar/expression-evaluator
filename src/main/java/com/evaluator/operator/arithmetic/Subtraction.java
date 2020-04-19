@@ -1,4 +1,6 @@
-package com.evaluator.operator;
+package com.evaluator.operator.arithmetic;
+
+import com.evaluator.operator.Operator;
 
 /**
  * @author shrikrushna on 2020-04-18

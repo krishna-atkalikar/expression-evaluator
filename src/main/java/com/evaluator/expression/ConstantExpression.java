@@ -10,7 +10,7 @@ public class ConstantExpression extends Expression {
 
     private Object value;
 
-    public <T> ConstantExpression(Object value) {
+    public ConstantExpression(Object value) {
         this.value = value;
     }
 

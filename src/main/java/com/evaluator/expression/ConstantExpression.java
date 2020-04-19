@@ -15,10 +15,11 @@ public class ConstantExpression extends Expression {
     }
 
     public Object getValue() {
-        if (value instanceof Integer || value instanceof Long) {
+        try {
             return Double.valueOf(value.toString());
+        } catch (NumberFormatException nfe) {
+            return value;
         }
-        return value;
     }
 
     @Override

@@ -3,10 +3,22 @@ package com.evaluator.visitor;
 import com.evaluator.expression.*;
 import com.evaluator.operator.Operators;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author shrikrushna on 2020-04-16
  */
 public class ExpressionVisitor<T> implements Visitor<T> {
+
+    private Map<String, Object> context = new HashMap<>();
+
+    public ExpressionVisitor(Map<String, Object> context) {
+        this.context = context;
+    }
+
+    public ExpressionVisitor() {
+    }
 
     @Override
     public T visit(Expression expression) {
@@ -39,5 +51,10 @@ public class ExpressionVisitor<T> implements Visitor<T> {
     @Override
     public T visit(ConstantExpression expression) {
         return (T) expression.getValue();
+    }
+
+    @Override public T visit(ParameterExpression parameterExpression) {
+        String paramName = parameterExpression.getParamName();
+        return (T) context.get(paramName);
     }
 }

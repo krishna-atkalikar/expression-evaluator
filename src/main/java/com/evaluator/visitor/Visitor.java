@@ -16,4 +16,6 @@ public interface Visitor<T> {
     T visit(TernaryExpression ternaryExpression);
 
     T visit(ConstantExpression constantExpression);
+
+    T visit(ParameterExpression parameterExpression);
 }

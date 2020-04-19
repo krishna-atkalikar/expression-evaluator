@@ -5,31 +5,41 @@ package com.evaluator.operator;
  */
 public enum OperationType {
 
-    ADD,
-    SUBTRACT,
-    MULTIPLICATION,
-    DIVISION,
+    ADD("+"),
+    SUBTRACT("-"),
+    MULTIPLICATION("*"),
+    DIVISION("/"),
 
-    DATE_DIFFERENCE,
-    ADD_DAYS_TO_DATE,
-    SUBTRACT_DAYS_FROM_DATE,
+    LT("<"),
+    LTE("<="),
+    GT(">"),
+    GTE(">="),
+    EQ("=="),
+    NEQ("!="),
 
-    LT,
-    LTE,
-    GT,
-    GTE,
-    EQ,
-    NEQ,
+    AND("&&"),
+    OR("||"),
+    NOT("!"),
 
-    AND,
-    OR,
-    NOT,
+    IF("IF"),
+    POWER("POW"),
+    MIN("MIN"),
+    FLOOR("FLOOR"),
+    CEILING("CEIL"),
 
-    IF,
-    POWER,
-    MIN,
-    FLOOR,
-    CEILING,
+    DATE_DIFFERENCE("DATE_DIFF"),
+    ADD_DAYS_TO_DATE("ADD_DAYS_TO_DATE"),
+    SUBTRACT_DAYS_FROM_DATE("SUBTRACT_DAYS_FROM_DATE"),
 
+    ;
 
+    private String symbol;
+
+    OperationType(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }

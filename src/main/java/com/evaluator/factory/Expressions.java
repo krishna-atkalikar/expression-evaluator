@@ -1,4 +1,4 @@
-package com.evaluator;
+package com.evaluator.factory;
 
 import com.evaluator.expression.*;
 import com.evaluator.operator.OperationType;
@@ -98,4 +98,7 @@ public class Expressions {
         return new ConstantExpression(value);
     }
 
+    public static Expression param(String value) {
+        return new ParameterExpression(value);
+    }
 }

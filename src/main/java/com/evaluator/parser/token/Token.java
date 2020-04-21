@@ -1,20 +1,14 @@
-package com.evaluator.parser;
+package com.evaluator.parser.token;
 
 /**
  * @author shrikrushna on 2020-04-19
  */
 public class Token {
 
-    private final int sequence;
     private final String token;
 
-    public Token(int sequence, String token) {
-        this.sequence = sequence;
+    public Token(String token) {
         this.token = token;
-    }
-
-    public int getSequence() {
-        return sequence;
     }
 
     public String getToken() {

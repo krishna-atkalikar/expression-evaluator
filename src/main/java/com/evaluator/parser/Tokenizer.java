@@ -1,5 +1,11 @@
 package com.evaluator.parser;
 
+import com.evaluator.InvalidExpressionException;
+import com.evaluator.parser.token.ConstantToken;
+import com.evaluator.parser.token.OperatorToken;
+import com.evaluator.parser.token.Token;
+import com.evaluator.parser.token.VariableToken;
+
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,37 +21,36 @@ public class Tokenizer {
         tokenInfos = new LinkedList<>();
     }
 
-    public void add(String regex, int sequence, TokenType tokenType) {
-        tokenInfos.add(new TokenInfo(Pattern.compile("^(" + regex + ")"), sequence, tokenType));
-//        tokenInfos.add(new TokenInfo(Pattern.compile(regex), sequence, tokenType));
+    public void add(String regex, TokenType tokenType) {
+        tokenInfos.add(new TokenInfo(Pattern.compile("^(" + regex + ")"), tokenType));
     }
 
-    public LinkedList<Token> tokenize(String str) {
+    public LinkedList<Token> tokenize(String postfixExpression) {
         LinkedList<Token> tokens = new LinkedList<>();
-
-        String s = str.trim();
+        String s = postfixExpression.trim();
         while (!s.equals("")) {
             boolean match = false;
             for (TokenInfo info : tokenInfos) {
                 Matcher m = info.getRegex().matcher(s);
                 if (m.find()) {
                     match = true;
-                    String tok = m.group().trim();
+                    String token = m.group().trim();
                     s = m.replaceFirst("").trim();
-                    if (info.getTokenType() == TokenType.OPERATOR)
-                        tokens.add(new OperatorToken(info.getSequence(), tok));
-                    else if (info.getTokenType() == TokenType.CONSTANT)
-                        tokens.add(new ConstantToken(info.getSequence(), tok));
-                    else if (info.getTokenType() == TokenType.FUNCTION) {
-                        tokens.add(new OperatorToken(info.getSequence(), tok));
+                    if (info.getTokenType() == TokenType.OPERATOR) {
+                        tokens.add(new OperatorToken(token));
+                    } else if (info.getTokenType() == TokenType.CONSTANT) {
+                        tokens.add(new ConstantToken(token));
+                    } else if (info.getTokenType() == TokenType.FUNCTION) {
+                        tokens.add(new OperatorToken(token));
                     } else if (info.getTokenType() == TokenType.VARIABLE) {
-                        tokens.add(new VariableToken(info.getSequence(), tok));
+                        tokens.add(new VariableToken(token));
                     }
                     break;
                 }
             }
-            if (!match)
-                throw new RuntimeException("Unexpected character in input: " + s);
+            if (!match) {
+                throw new InvalidExpressionException("Unexpected character in expression - " + s);
+            }
         }
         return tokens;
     }

@@ -1,7 +1,9 @@
 package com.evaluator.parser;
 
+import com.evaluator.InvalidExpressionException;
 import com.evaluator.expression.Expression;
 import com.evaluator.factory.Expressions;
+import com.evaluator.parser.token.Token;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,14 +57,21 @@ public class ExpressionMaker {
             } else if (token.isConstantToken()) {
                 expressions.push(constant(token.getToken()));
             } else if (token.isOperatorToken()) {
-                Expression right = expressions.pop();
-                Expression left = expressions.pop();
-                if (binaryOperators.containsKey(token.getToken())) {
-                    expressions.push(binaryOperators.get(token.getToken()).apply(left, right));
-                } else if (token.getToken().equalsIgnoreCase("IF")) {
-                    expressions.push(Expressions.iff(expressions.pop(), left, right));
+                if (unaryOperators.containsKey(token.getToken())) {
+                    expressions.push(unaryOperators.get(token.getToken()).apply(expressions.pop()));
+                } else {
+                    Expression right = expressions.pop();
+                    Expression left = expressions.pop();
+                    if (binaryOperators.containsKey(token.getToken())) {
+                        expressions.push(binaryOperators.get(token.getToken()).apply(left, right));
+                    } else if (token.getToken().equalsIgnoreCase("IF")) {
+                        expressions.push(Expressions.iff(expressions.pop(), left, right));
+                    }
                 }
             }
+        }
+        if (expressions.size() != 1) {
+            throw new InvalidExpressionException("Invalid expression." + expressions);
         }
         return expressions.pop();
     }

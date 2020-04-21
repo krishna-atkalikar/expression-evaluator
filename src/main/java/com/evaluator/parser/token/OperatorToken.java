@@ -1,12 +1,12 @@
-package com.evaluator.parser;
+package com.evaluator.parser.token;
 
 /**
  * @author shrikrushna on 2020-04-19
  */
 public class OperatorToken extends Token {
 
-    public OperatorToken(int token, String sequence) {
-        super(token, sequence);
+    public OperatorToken(String token) {
+        super(token);
     }
 
     @Override

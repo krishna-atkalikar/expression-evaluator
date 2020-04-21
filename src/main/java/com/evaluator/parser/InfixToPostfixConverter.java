@@ -1,5 +1,8 @@
 package com.evaluator.parser;
 
+import com.evaluator.InvalidExpressionException;
+import com.evaluator.operator.OperationType;
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -16,8 +19,8 @@ public class InfixToPostfixConverter {
     private static final String NUMBER = "0?-?\\+?\\d+(\\.\\d+)?";
 
     public static String convert(String expr) {
-        Stack<String> operators = new Stack<String>();
-        Queue<String> output = new LinkedList<String>();
+        Stack<String> operators = new Stack<>();
+        Queue<String> output = new LinkedList<>();
         String[] tokens = expr.split("[\\s]");
         StringBuilder postfixStr = new StringBuilder();
         int tokensRemaining = tokens.length;
@@ -31,7 +34,7 @@ public class InfixToPostfixConverter {
                 while (!operators.empty() && operators.peek().matches(PAREN_RIGHT)) {
                     output.offer(operators.pop());
                     if (operators.empty() && !operators.peek().matches(PAREN_RIGHT)) {
-                        throw new RuntimeException("Mismatched Parentheses.");
+                        throw new InvalidExpressionException("Mismatched Parentheses.");
                     }
                 }
             } else if (isOperator(token)) {
@@ -52,7 +55,7 @@ public class InfixToPostfixConverter {
                 } else if (!operators.empty() && isFunction(operators.peek())) {
                     output.offer(operators.pop());
                 } else if (operators.empty()) {
-                    throw new RuntimeException("Mismatched Parentheses.");
+                    throw new InvalidExpressionException("Mismatched Parentheses.");
                 }
             } else if (token.matches(VAR_NAME)) {
                 output.offer(token);
@@ -62,9 +65,8 @@ public class InfixToPostfixConverter {
 
         if (tokensRemaining == 0) {
             while (!operators.empty()) {
-                if (operators.peek().matches(PAREN_LEFT)
-                        || operators.peek().matches(PAREN_RIGHT)) {
-                    throw new RuntimeException("Mismatched Parentheses.");
+                if (operators.peek().matches(PAREN_LEFT) || operators.peek().matches(PAREN_RIGHT)) {
+                    throw new InvalidExpressionException("Mismatched Parentheses.");
                 }
                 output.offer(operators.pop());
             }
@@ -84,63 +86,19 @@ public class InfixToPostfixConverter {
     }
 
     private static boolean isOperator(String str) {
-        switch (str) {
-            case "^":
-            case "/":
-            case "*":
-            case "+":
-            case "-":
-            case "<=":
-            case "MIN":
-            case "IF":
-                return true;
-            default:
-                return false;
-        }
+        return OperationType.isOperator(str);
     }
 
     private static boolean isLeftAssociative(String str) {
-        switch (str) {
-            case "^":
-                return false;
-            case "/":
-            case "*":
-            case "+":
-            case "-":
-            case "<=":
-            case "MIN":
-            case "IF":
-                return true;
-            default:
-                throw new IllegalArgumentException("Operator unknown: " + str);
-        }
+        return OperationType.from(str).isLeftAssociative();
     }
 
     private static int operatorPrecedence(String str) {
-        switch (str) {
-            case "^":
-            case "MIN":
-            case "IF":
-            case "<=":
-                return 4;
-            case "/":
-            case "*":
-                return 3;
-            case "+":
-            case "-":
-                return 2;
-            default:
-                throw new IllegalArgumentException("Operator unknown: " + str);
-        }
+        return OperationType.from(str).getPrecedence();
     }
 
     private static boolean isFunction(String str) {
-        switch (str) {
-            case "pow":
-                return true;
-            default:
-                return false;
-        }
+        return "pow".equals(str);
     }
 
 }

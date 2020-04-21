@@ -21,4 +21,10 @@ public class ParameterExpression extends Expression {
     public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(this);
     }
+
+    @Override public String toString() {
+        return "ParameterExpression{" +
+                "paramName='" + paramName + '\'' +
+                '}';
+    }
 }

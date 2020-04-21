@@ -1,5 +1,6 @@
 package com.evaluator.visitor;
 
+import com.evaluator.InvalidExpressionException;
 import com.evaluator.expression.*;
 import com.evaluator.operator.Operators;
 
@@ -55,6 +56,9 @@ public class ExpressionVisitor<T> implements Visitor<T> {
 
     @Override public T visit(ParameterExpression parameterExpression) {
         String paramName = parameterExpression.getParamName();
+        if (!context.containsKey(paramName)) {
+            throw new InvalidExpressionException(parameterExpression);
+        }
         return (T) context.get(paramName);
     }
 }

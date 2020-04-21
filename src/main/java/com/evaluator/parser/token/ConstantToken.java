@@ -1,12 +1,12 @@
-package com.evaluator.parser;
+package com.evaluator.parser.token;
 
 /**
  * @author shrikrushna on 2020-04-19
  */
 public class ConstantToken extends Token {
 
-    public ConstantToken(int token, String sequence) {
-        super(token, sequence);
+    public ConstantToken(String token) {
+        super(token);
     }
 
     @Override

@@ -16,7 +16,13 @@ public class Operators {
 
 
     static {
-        binaryOperators.put(OperationType.ADD, (l, r) -> Double.valueOf(l.toString()) + Double.valueOf(r.toString()));
+        binaryOperators.put(OperationType.ADD, (l, r) -> {
+            try {
+                return Double.valueOf(l.toString()) + Double.valueOf(r.toString());
+            } catch (Exception ex) {
+                return l.toString() + r.toString();
+            }
+        });
         binaryOperators.put(OperationType.SUBTRACT, (l, r) -> Double.valueOf(l.toString()) - Double.valueOf(r.toString()));
         binaryOperators.put(OperationType.MULTIPLICATION, (l, r) -> Double.valueOf(l.toString()) * Double.valueOf(r.toString()));
         binaryOperators.put(OperationType.DIVISION, (l, r) -> Double.valueOf(l.toString()) / Double.valueOf(r.toString()));

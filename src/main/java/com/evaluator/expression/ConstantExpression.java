@@ -7,7 +7,6 @@ import com.evaluator.visitor.Visitor;
  */
 public class ConstantExpression extends Expression {
 
-
     private Object value;
 
     public ConstantExpression(Object value) {

@@ -3,6 +3,7 @@ package com.evaluator.parser;
 import com.evaluator.InvalidExpressionException;
 import com.evaluator.operator.Operators;
 import com.evaluator.parser.token.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class InfixToPostfixTokenizer {
     public static List<Token> tokenize(String expr) {
         Stack<String> operators = new Stack<>();
         List<Token> tokensToReturn = new LinkedList<>();
-        String[] tokens = expr.split(SPACE);
+        String[] tokens = expr.trim().split(SPACE);
         int tokensRemaining = tokens.length;
 
         for (String token : tokens) {
@@ -70,7 +71,7 @@ public class InfixToPostfixTokenizer {
             } else if (token.matches(DATE)) {
                 tokensToReturn.add(new DateToken(token));
             } else if (token.matches(VAR_NAME)) {
-                tokensToReturn.add(new VariableToken(token));
+                tokensToReturn.add(new VariableToken(StringUtils.removeEnd(token, "$").replaceFirst("\\$", "")));
             } else if (!token.equalsIgnoreCase(",")) {
                 tokensToReturn.add(new ConstantToken(token));
             }

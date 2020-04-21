@@ -1,7 +1,9 @@
 package com.evaluator.factory;
 
 import com.evaluator.expression.*;
-import com.evaluator.operator.OperationType;
+import com.evaluator.operator.BinaryOperator;
+import com.evaluator.operator.TernaryOperator;
+import com.evaluator.operator.UnaryOperator;
 
 /**
  * Factory class to create different expressions based on type.
@@ -11,87 +13,87 @@ import com.evaluator.operator.OperationType;
 public class Expressions {
 
     public static Expression add(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.ADD);
+        return new BinaryExpression(left, right, BinaryOperator.ADD);
     }
 
     public static Expression sub(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.SUBTRACT);
+        return new BinaryExpression(left, right, BinaryOperator.SUBTRACT);
     }
 
     public static Expression multiply(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.MULTIPLICATION);
+        return new BinaryExpression(left, right, BinaryOperator.MULTIPLICATION);
     }
 
     public static Expression divide(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.DIVISION);
+        return new BinaryExpression(left, right, BinaryOperator.DIVISION);
     }
 
     public static Expression dateDifference(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.DATE_DIFFERENCE);
+        return new BinaryExpression(left, right, BinaryOperator.DATE_DIFFERENCE);
     }
 
     public static Expression addDays(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.ADD_DAYS_TO_DATE);
+        return new BinaryExpression(left, right, BinaryOperator.ADD_DAYS_TO_DATE);
     }
 
     public static Expression subtractDays(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.SUBTRACT_DAYS_FROM_DATE);
+        return new BinaryExpression(left, right, BinaryOperator.SUBTRACT_DAYS_FROM_DATE);
     }
 
     public static Expression lt(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.LT);
+        return new BinaryExpression(left, right, BinaryOperator.LT);
     }
 
     public static Expression lte(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.LTE);
+        return new BinaryExpression(left, right, BinaryOperator.LTE);
     }
 
     public static Expression gt(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.GT);
+        return new BinaryExpression(left, right, BinaryOperator.GT);
     }
 
     public static Expression gte(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.GTE);
+        return new BinaryExpression(left, right, BinaryOperator.GTE);
     }
 
     public static Expression eq(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.EQ);
+        return new BinaryExpression(left, right, BinaryOperator.EQ);
     }
 
     public static Expression nEq(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.NEQ);
+        return new BinaryExpression(left, right, BinaryOperator.NEQ);
     }
 
     public static Expression and(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.AND);
+        return new BinaryExpression(left, right, BinaryOperator.AND);
     }
 
     public static Expression or(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.OR);
+        return new BinaryExpression(left, right, BinaryOperator.OR);
     }
 
     public static Expression pow(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.POWER);
+        return new BinaryExpression(left, right, BinaryOperator.POWER);
     }
 
     public static Expression min(Expression left, Expression right) {
-        return new BinaryExpression(left, right, OperationType.MIN);
+        return new BinaryExpression(left, right, BinaryOperator.MIN);
     }
 
     public static Expression not(Expression left) {
-        return new UnaryExpression(left, OperationType.NOT);
+        return new UnaryExpression(left, UnaryOperator.NOT);
     }
 
     public static Expression floor(Expression left) {
-        return new UnaryExpression(left, OperationType.FLOOR);
+        return new UnaryExpression(left, UnaryOperator.FLOOR);
     }
 
     public static Expression ceil(Expression left) {
-        return new UnaryExpression(left, OperationType.CEILING);
+        return new UnaryExpression(left, UnaryOperator.CEILING);
     }
 
     public static Expression iff(Expression condition, Expression ifTrue, Expression orElse) {
-        return new TernaryExpression(condition, ifTrue, orElse, OperationType.IF);
+        return new TernaryExpression(condition, ifTrue, orElse, TernaryOperator.IF);
     }
 
     public static Expression constant(Object value) {

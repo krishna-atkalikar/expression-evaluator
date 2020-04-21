@@ -1,6 +1,6 @@
 package com.evaluator.expression;
 
-import com.evaluator.operator.OperationType;
+import com.evaluator.operator.TernaryOperator;
 import com.evaluator.visitor.Visitor;
 
 /**
@@ -8,16 +8,16 @@ import com.evaluator.visitor.Visitor;
  */
 public class TernaryExpression implements Expression {
 
-    private final OperationType type;
+    private final TernaryOperator ternaryOperator;
     private Expression condition;
     private Expression ifTrue;
     private Expression orElse;
 
-    public TernaryExpression(Expression condition, Expression ifTrue, Expression orElse, OperationType type) {
+    public TernaryExpression(Expression condition, Expression ifTrue, Expression orElse, TernaryOperator ternaryOperator) {
         this.condition = condition;
         this.ifTrue = ifTrue;
         this.orElse = orElse;
-        this.type = type;
+        this.ternaryOperator = ternaryOperator;
     }
 
     public Expression getCondition() {
@@ -32,8 +32,8 @@ public class TernaryExpression implements Expression {
         return orElse;
     }
 
-    public OperationType getType() {
-        return type;
+    public TernaryOperator getTernaryOperator() {
+        return ternaryOperator;
     }
 
     @Override public <T> T accept(Visitor<T> visitor) {

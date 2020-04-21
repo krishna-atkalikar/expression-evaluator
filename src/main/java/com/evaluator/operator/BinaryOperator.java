@@ -14,13 +14,7 @@ import java.util.function.BiFunction;
  */
 public enum BinaryOperator implements Operator {
 
-    ADD("+", 2, true, Expressions::add, (l, r) -> {
-        try {
-            return Double.valueOf(l.toString()) + Double.valueOf(r.toString());
-        } catch (Exception ex) {
-            return l.toString() + r.toString();
-        }
-    }),
+    ADD("+", 2, true, Expressions::add, BinaryOperator::performAddition),
     SUBTRACT("-", 2, true, Expressions::sub, (l, r) -> Double.valueOf(l.toString()) - Double.valueOf(r.toString())),
     MULTIPLICATION("*", 3, true, Expressions::multiply, (l, r) -> Double.valueOf(l.toString()) * Double.valueOf(r.toString())),
     DIVISION("/", 3, true, Expressions::divide, (l, r) -> Double.valueOf(l.toString()) / Double.valueOf(r.toString())),
@@ -95,5 +89,13 @@ public enum BinaryOperator implements Operator {
 
     public BiFunction<Object, Object, Object> getEvaluationFunction() {
         return evaluationFunction;
+    }
+
+    private static Object performAddition(Object l, Object r) {
+        try {
+            return Double.valueOf(l.toString()) + Double.valueOf(r.toString());
+        } catch (Exception ex) {
+            return l.toString() + r.toString();
+        }
     }
 }

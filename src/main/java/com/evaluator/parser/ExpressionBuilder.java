@@ -4,6 +4,7 @@ import com.evaluator.InvalidExpressionException;
 import com.evaluator.expression.Expression;
 import com.evaluator.factory.Expressions;
 import com.evaluator.operator.BinaryOperator;
+import com.evaluator.operator.Operators;
 import com.evaluator.operator.UnaryOperator;
 import com.evaluator.parser.token.DateToken;
 import com.evaluator.parser.token.Token;
@@ -13,7 +14,6 @@ import java.util.Stack;
 
 import static com.evaluator.factory.Expressions.constant;
 import static com.evaluator.factory.Expressions.param;
-import static com.evaluator.operator.OperationType.IF;
 
 /**
  * Expression builder which takes tokens as input and output a well formed expression that can be evaluated.
@@ -34,14 +34,14 @@ public class ExpressionBuilder {
             } else if (token.isConstantToken()) {
                 expressions.push(constant(token.getToken()));
             } else if (token.isOperatorToken()) {
-                if (UnaryOperator.contains(token.getToken())) {
+                if (Operators.isUnary(token.getToken())) {
                     expressions.push(UnaryOperator.from(token.getToken()).getExprBuilderFunction().apply(expressions.pop()));
                 } else {
                     Expression right = expressions.pop();
                     Expression left = expressions.pop();
-                    if (BinaryOperator.contains(token.getToken())) {
+                    if (Operators.isBinary(token.getToken())) {
                         expressions.push(BinaryOperator.forSymbol(token.getToken()).getExprBuilderFunction().apply(left, right));
-                    } else if (token.getToken().equalsIgnoreCase(IF.getSymbol())) {
+                    } else if (Operators.isTernary(token.getToken())) {
                         expressions.push(Expressions.iff(expressions.pop(), left, right));
                     }
                 }

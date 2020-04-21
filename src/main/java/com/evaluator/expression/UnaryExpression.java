@@ -1,6 +1,6 @@
 package com.evaluator.expression;
 
-import com.evaluator.operator.OperationType;
+import com.evaluator.operator.UnaryOperator;
 import com.evaluator.visitor.Visitor;
 
 /**
@@ -9,19 +9,19 @@ import com.evaluator.visitor.Visitor;
 public class UnaryExpression implements Expression {
 
     private Expression expression;
-    private OperationType operationType;
+    private UnaryOperator unaryOperator;
 
-    public UnaryExpression(Expression expression, OperationType operationType) {
+    public UnaryExpression(Expression expression, UnaryOperator unaryOperator) {
         this.expression = expression;
-        this.operationType = operationType;
+        this.unaryOperator = unaryOperator;
     }
 
     public Expression getExpression() {
         return expression;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public UnaryOperator getUnaryOperator() {
+        return unaryOperator;
     }
 
     @Override public <T> T accept(Visitor<T> visitor) {

@@ -1,7 +1,7 @@
 package com.evaluator.parser;
 
 import com.evaluator.InvalidExpressionException;
-import com.evaluator.operator.OperationType;
+import com.evaluator.operator.Operators;
 import com.evaluator.parser.token.*;
 
 import java.util.LinkedList;
@@ -91,16 +91,16 @@ public class InfixToPostfixTokenizer {
         return str.matches(NUMBER);
     }
 
-    private static boolean isOperator(String str) {
-        return OperationType.isOperator(str);
+    private static boolean isOperator(String symbol) {
+        return Operators.isOperator(symbol);
     }
 
-    private static boolean isLeftAssociative(String str) {
-        return OperationType.forSymbol(str).isLeftAssociative();
+    private static boolean isLeftAssociative(String symbol) {
+        return Operators.isLeftAssociative(symbol);
     }
 
-    private static int operatorPrecedence(String str) {
-        return OperationType.forSymbol(str).getPrecedence();
+    private static int operatorPrecedence(String symbol) {
+        return Operators.getPrecedence(symbol);
     }
 
     private static boolean isFunction(String str) {

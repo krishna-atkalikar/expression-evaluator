@@ -41,7 +41,7 @@ public class FunctionTest {
     public void dateDifference_returnsDifferenceInDays() {
         Visitor<Long> visitor = new ExpressionVisitor<>();
 
-        long difference = visitor.visit(dateDifference(constant(LocalDate.now().minusDays(2)), constant(LocalDate.now())));
+        long difference = visitor.visit(dateDifference(constant(LocalDate.now()), constant(LocalDate.now().minusDays(2))));
         assertEquals(2, difference);
     }
 

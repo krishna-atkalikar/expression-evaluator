@@ -6,4 +6,8 @@ package com.evaluator.operator;
 public interface Operator {
 
     String getSymbol();
+
+    int getPrecedence();
+
+    boolean isLeftAssociative();
 }

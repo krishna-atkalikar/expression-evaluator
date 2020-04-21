@@ -1,6 +1,6 @@
 package com.evaluator.expression;
 
-import com.evaluator.operator.OperationType;
+import com.evaluator.operator.BinaryOperator;
 import com.evaluator.visitor.Visitor;
 
 /**
@@ -10,12 +10,12 @@ public class BinaryExpression implements Expression {
 
     private Expression left;
     private Expression right;
-    private OperationType operationType;
+    private BinaryOperator binaryOperator;
 
-    public BinaryExpression(Expression left, Expression right, OperationType operationType) {
+    public BinaryExpression(Expression left, Expression right, BinaryOperator binaryOperator) {
         this.left = left;
         this.right = right;
-        this.operationType = operationType;
+        this.binaryOperator = binaryOperator;
     }
 
     public Expression getLeft() {
@@ -26,8 +26,8 @@ public class BinaryExpression implements Expression {
         return right;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public BinaryOperator getBinaryOperator() {
+        return binaryOperator;
     }
 
     @Override

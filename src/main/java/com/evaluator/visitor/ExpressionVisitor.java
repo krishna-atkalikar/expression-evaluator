@@ -29,14 +29,14 @@ public class ExpressionVisitor<T> implements Visitor<T> {
     @Override
     public T visit(UnaryExpression unaryExpression) {
         T visit = visit(unaryExpression.getExpression());
-        return (T) Operators.getUnary(unaryExpression.getOperationType()).apply(visit);
+        return (T) Operators.get(unaryExpression.getUnaryOperator()).apply(visit);
     }
 
     @Override
     public T visit(BinaryExpression binaryExpression) {
         Object left = visit(binaryExpression.getLeft());
         Object right = visit(binaryExpression.getRight());
-        return (T) Operators.getBinary(binaryExpression.getOperationType()).apply(left, right);
+        return (T) Operators.get(binaryExpression.getBinaryOperator()).apply(left, right);
     }
 
     @Override

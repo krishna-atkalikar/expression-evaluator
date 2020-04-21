@@ -34,4 +34,13 @@ public class BinaryExpression implements Expression {
     public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "BinaryExpression{" +
+                "left=" + left +
+                ", right=" + right +
+                ", binaryOperator=" + binaryOperator +
+                '}';
+    }
 }

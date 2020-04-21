@@ -22,7 +22,8 @@ public class ParameterExpression implements Expression {
         return visitor.visit(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "ParameterExpression{" +
                 "paramName='" + paramName + '\'' +
                 '}';

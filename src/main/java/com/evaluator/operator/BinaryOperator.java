@@ -5,8 +5,6 @@ import com.evaluator.factory.Expressions;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.BiFunction;
 
 /**
@@ -36,23 +34,13 @@ public enum BinaryOperator implements Operator {
 
     DATE_DIFFERENCE("DATE_DIFF", 4, true, Expressions::dateDifference, (l, r) -> ChronoUnit.DAYS.between((LocalDate) r, (LocalDate) l)),
     ADD_DAYS_TO_DATE("ADD_DAYS_TO_DATE", 4, true, Expressions::addDays, (l, r) -> ((LocalDate) l).plusDays(((Double) r).intValue())),
-    SUBTRACT_DAYS_FROM_DATE("SUBTRACT_DAYS_FROM_DATE", 4, true, Expressions::subtractDays, (l, r) -> ((LocalDate) l).minusDays(((Double) r).intValue())),
+    SUBTRACT_DAYS_FROM_DATE("SUBTRACT_DAYS_FROM_DATE", 4, true, Expressions::subtractDays, (l, r) -> ((LocalDate) l).minusDays(((Double) r).intValue()));
 
-    ;
-
-    private static final Map<String, BinaryOperator> map = new HashMap<>();
-
-    static {
-        for (BinaryOperator value : values()) {
-            map.put(value.getSymbol(), value);
-        }
-    }
-
+    private final String symbol;
     private final int precedence;
     private final boolean isLeftAssociative;
     private final BiFunction<Expression, Expression, Expression> exprBuilderFunction;
-    private String symbol;
-    private BiFunction<Object, Object, Object> evaluationFunction;
+    private final BiFunction<Object, Object, Object> evaluationFunction;
 
     BinaryOperator(String symbol, int precedence, boolean isLeftAssociative, BiFunction<Expression, Expression, Expression> exprBuilderFunction, BiFunction<Object, Object, Object> evaluationFunction) {
         this.symbol = symbol;
@@ -62,12 +50,12 @@ public enum BinaryOperator implements Operator {
         this.evaluationFunction = evaluationFunction;
     }
 
-    public static BinaryOperator forSymbol(String symbol) {
-        return map.get(symbol);
-    }
-
-    public static boolean contains(String symbol) {
-        return map.containsKey(symbol);
+    private static Object performAddition(Object l, Object r) {
+        try {
+            return Double.valueOf(l.toString()) + Double.valueOf(r.toString());
+        } catch (Exception ex) {
+            return l.toString() + r.toString();
+        }
     }
 
     @Override
@@ -75,10 +63,12 @@ public enum BinaryOperator implements Operator {
         return symbol;
     }
 
+    @Override
     public int getPrecedence() {
         return precedence;
     }
 
+    @Override
     public boolean isLeftAssociative() {
         return isLeftAssociative;
     }
@@ -89,13 +79,5 @@ public enum BinaryOperator implements Operator {
 
     public BiFunction<Object, Object, Object> getEvaluationFunction() {
         return evaluationFunction;
-    }
-
-    private static Object performAddition(Object l, Object r) {
-        try {
-            return Double.valueOf(l.toString()) + Double.valueOf(r.toString());
-        } catch (Exception ex) {
-            return l.toString() + r.toString();
-        }
     }
 }

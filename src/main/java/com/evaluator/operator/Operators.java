@@ -1,5 +1,7 @@
 package com.evaluator.operator;
 
+import com.evaluator.expression.Expression;
+
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -41,23 +43,31 @@ public class Operators {
         return symbolToOperatorMap.get(symbol).getPrecedence();
     }
 
-    public static BiFunction<Object, Object, Object> get(BinaryOperator type) {
-        return binaryOperatorToEvaluationFunction.get(type);
-    }
-
     public static Function<Object, Object> get(UnaryOperator unaryOperator) {
         return unaryOperatorToEvaluationFunction.get(unaryOperator);
     }
 
-    public static boolean isBinary(String symbol) {
-        return symbolToOperatorMap.get(symbol) instanceof BinaryOperator;
+    public static BiFunction<Object, Object, Object> get(BinaryOperator type) {
+        return binaryOperatorToEvaluationFunction.get(type);
     }
 
     public static boolean isUnary(String symbol) {
         return symbolToOperatorMap.get(symbol) instanceof UnaryOperator;
     }
 
+    public static boolean isBinary(String symbol) {
+        return symbolToOperatorMap.get(symbol) instanceof BinaryOperator;
+    }
+
     public static boolean isTernary(String symbol) {
         return symbolToOperatorMap.get(symbol) instanceof TernaryOperator;
+    }
+
+    public static BiFunction<Expression, Expression, Expression> binaryExprBuilderFunction(String symbol) {
+        return ((BinaryOperator) symbolToOperatorMap.get(symbol)).getExprBuilderFunction();
+    }
+
+    public static Function<Expression, Expression> unaryExprBuilderFunction(String symbol) {
+        return ((UnaryOperator) symbolToOperatorMap.get(symbol)).getExprBuilderFunction();
     }
 }

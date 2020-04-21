@@ -24,7 +24,16 @@ public class UnaryExpression implements Expression {
         return unaryOperator;
     }
 
-    @Override public <T> T accept(Visitor<T> visitor) {
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return "UnaryExpression{" +
+                "expression=" + expression +
+                ", unaryOperator=" + unaryOperator +
+                '}';
     }
 }

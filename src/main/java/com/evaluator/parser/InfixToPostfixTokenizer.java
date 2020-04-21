@@ -26,8 +26,8 @@ public class InfixToPostfixTokenizer {
     /**
      * Parses input string expression and returns tokens to be used for building expression.
      *
-     * @param expr
-     * @return
+     * @param expr input infix expression
+     * @return Tokens in postfix form.
      */
     public static List<Token> tokenize(String expr) {
         Stack<String> operators = new Stack<>();

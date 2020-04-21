@@ -4,9 +4,8 @@ package com.evaluator.operator;
  * @author shrikrushna on 2020-04-22
  */
 public enum TernaryOperator implements Operator {
-    IF("IF", 4, true),
-    ;
 
+    IF("IF", 4, true);
 
     private final String symbol;
     private final int precedence;

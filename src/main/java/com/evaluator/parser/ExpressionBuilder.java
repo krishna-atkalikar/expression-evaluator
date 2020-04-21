@@ -2,18 +2,14 @@ package com.evaluator.parser;
 
 import com.evaluator.InvalidExpressionException;
 import com.evaluator.expression.Expression;
-import com.evaluator.factory.Expressions;
-import com.evaluator.operator.BinaryOperator;
 import com.evaluator.operator.Operators;
-import com.evaluator.operator.UnaryOperator;
 import com.evaluator.parser.token.DateToken;
 import com.evaluator.parser.token.Token;
 
 import java.util.List;
 import java.util.Stack;
 
-import static com.evaluator.factory.Expressions.constant;
-import static com.evaluator.factory.Expressions.param;
+import static com.evaluator.factory.Expressions.*;
 
 /**
  * Expression builder which takes tokens as input and output a well formed expression that can be evaluated.
@@ -24,7 +20,6 @@ public class ExpressionBuilder {
 
     public static Expression build(List<Token> list) {
         Stack<Expression> expressions = new Stack<>();
-
         for (Token token : list) {
             if (token.isVariableToken()) {
                 expressions.push(param(token.getToken()));
@@ -35,14 +30,14 @@ public class ExpressionBuilder {
                 expressions.push(constant(token.getToken()));
             } else if (token.isOperatorToken()) {
                 if (Operators.isUnary(token.getToken())) {
-                    expressions.push(UnaryOperator.from(token.getToken()).getExprBuilderFunction().apply(expressions.pop()));
+                    expressions.push(Operators.unaryExprBuilderFunction(token.getToken()).apply(expressions.pop()));
                 } else {
                     Expression right = expressions.pop();
                     Expression left = expressions.pop();
                     if (Operators.isBinary(token.getToken())) {
-                        expressions.push(BinaryOperator.forSymbol(token.getToken()).getExprBuilderFunction().apply(left, right));
+                        expressions.push(Operators.binaryExprBuilderFunction(token.getToken()).apply(left, right));
                     } else if (Operators.isTernary(token.getToken())) {
-                        expressions.push(Expressions.iff(expressions.pop(), left, right));
+                        expressions.push(iff(expressions.pop(), left, right));
                     }
                 }
             }

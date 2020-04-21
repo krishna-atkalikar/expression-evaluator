@@ -3,9 +3,9 @@ package com.evaluator.factory;
 import com.evaluator.expression.*;
 import com.evaluator.operator.OperationType;
 
-import java.time.LocalDate;
-
 /**
+ * Factory class to create different expressions based on type.
+ *
  * @author shrikrushna on 2020-04-16
  */
 public class Expressions {
@@ -26,16 +26,16 @@ public class Expressions {
         return new BinaryExpression(left, right, OperationType.DIVISION);
     }
 
-    public static Expression dateDifference(LocalDate left, LocalDate right) {
-        return new BinaryExpression(constant(left), constant(right), OperationType.DATE_DIFFERENCE);
+    public static Expression dateDifference(Expression left, Expression right) {
+        return new BinaryExpression(left, right, OperationType.DATE_DIFFERENCE);
     }
 
-    public static Expression addDays(LocalDate date, int daysToBeAdded) {
-        return new BinaryExpression(constant(date), constant(daysToBeAdded), OperationType.ADD_DAYS_TO_DATE);
+    public static Expression addDays(Expression left, Expression right) {
+        return new BinaryExpression(left, right, OperationType.ADD_DAYS_TO_DATE);
     }
 
-    public static Expression subtractDays(LocalDate date, int daysToBeSubtracted) {
-        return new BinaryExpression(constant(date), constant(daysToBeSubtracted), OperationType.SUBTRACT_DAYS_FROM_DATE);
+    public static Expression subtractDays(Expression left, Expression right) {
+        return new BinaryExpression(left, right, OperationType.SUBTRACT_DAYS_FROM_DATE);
     }
 
     public static Expression lt(Expression left, Expression right) {

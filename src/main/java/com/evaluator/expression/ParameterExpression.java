@@ -5,7 +5,7 @@ import com.evaluator.visitor.Visitor;
 /**
  * @author shrikrushna on 2020-04-19
  */
-public class ParameterExpression extends Expression {
+public class ParameterExpression implements Expression {
 
     private String paramName;
 

@@ -6,7 +6,7 @@ import com.evaluator.visitor.Visitor;
 /**
  * @author shrikrushna on 2020-04-18
  */
-public class TernaryExpression extends Expression {
+public class TernaryExpression implements Expression {
 
     private final OperationType type;
     private Expression condition;

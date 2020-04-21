@@ -3,9 +3,11 @@ package com.evaluator.expression;
 import com.evaluator.visitor.Visitor;
 
 /**
+ * Represent an expression.
+ *
  * @author shrikrushna on 2020-04-11
  */
-public abstract class Expression {
+public interface Expression {
 
-    public abstract <T> T accept(Visitor<T> visitor);
+    <T> T accept(Visitor<T> visitor);
 }

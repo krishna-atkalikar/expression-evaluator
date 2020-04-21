@@ -41,7 +41,7 @@ public class FunctionTest {
     public void dateDifference_returnsDifferenceInDays() {
         Visitor<Long> visitor = new ExpressionVisitor<>();
 
-        long difference = visitor.visit(dateDifference(LocalDate.now().minusDays(2), LocalDate.now()));
+        long difference = visitor.visit(dateDifference(constant(LocalDate.now().minusDays(2)), constant(LocalDate.now())));
         assertEquals(2, difference);
     }
 
@@ -49,7 +49,7 @@ public class FunctionTest {
     public void addDaysToDate_returnsDateWithDaysAdded() {
         Visitor<LocalDate> visitor = new ExpressionVisitor<>();
 
-        LocalDate date = visitor.visit(addDays(LocalDate.now().minusDays(2), 2));
+        LocalDate date = visitor.visit(addDays(constant(LocalDate.now().minusDays(2)), constant(2)));
         assertEquals(LocalDate.now(), date);
     }
 
@@ -57,7 +57,7 @@ public class FunctionTest {
     public void subtractDaysFromDate_returnsDateWithDaysAdded() {
         Visitor<LocalDate> visitor = new ExpressionVisitor<>();
 
-        LocalDate date = visitor.visit(subtractDays(LocalDate.now().plusDays(2), 2));
+        LocalDate date = visitor.visit(subtractDays(constant(LocalDate.now().plusDays(2)), constant(2)));
         assertEquals(LocalDate.now(), date);
     }
 

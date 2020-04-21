@@ -5,7 +5,7 @@ import com.evaluator.visitor.Visitor;
 /**
  * @author shrikrushna on 2020-04-16
  */
-public class ConstantExpression extends Expression {
+public class ConstantExpression implements Expression {
 
     private Object value;
 

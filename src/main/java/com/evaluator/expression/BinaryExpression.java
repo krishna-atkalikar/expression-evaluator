@@ -6,7 +6,7 @@ import com.evaluator.visitor.Visitor;
 /**
  * @author shrikrushna on 2020-04-11
  */
-public class BinaryExpression extends Expression {
+public class BinaryExpression implements Expression {
 
     private Expression left;
     private Expression right;
@@ -30,7 +30,8 @@ public class BinaryExpression extends Expression {
         return operationType;
     }
 
-    @Override public <T> T accept(Visitor<T> visitor) {
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(this);
     }
 }

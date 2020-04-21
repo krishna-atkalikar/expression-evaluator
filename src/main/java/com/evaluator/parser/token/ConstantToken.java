@@ -1,6 +1,8 @@
 package com.evaluator.parser.token;
 
 /**
+ * Represents a constant token
+ *
  * @author shrikrushna on 2020-04-19
  */
 public class ConstantToken extends Token {

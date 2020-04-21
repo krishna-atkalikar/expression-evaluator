@@ -57,7 +57,7 @@ public enum OperationType {
         return symbol;
     }
 
-    public static OperationType from(String symbol) {
+    public static OperationType forSymbol(String symbol) {
         return map.get(symbol);
     }
 

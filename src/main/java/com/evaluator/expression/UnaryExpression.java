@@ -6,7 +6,7 @@ import com.evaluator.visitor.Visitor;
 /**
  * @author shrikrushna on 2020-04-19
  */
-public class UnaryExpression extends Expression {
+public class UnaryExpression implements Expression {
 
     private Expression expression;
     private OperationType operationType;

@@ -3,6 +3,8 @@ package com.evaluator.visitor;
 import com.evaluator.expression.*;
 
 /**
+ * A visitor class which visits expression and evaluated them.
+ *
  * @author shrikrushna on 2020-04-16
  */
 public interface Visitor<T> {

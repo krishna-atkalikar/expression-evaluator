@@ -1,6 +1,8 @@
 package com.evaluator.parser.token;
 
 /**
+ * Represents a variable token
+ *
  * @author shrikrushna on 2020-04-19
  */
 public class VariableToken extends Token {

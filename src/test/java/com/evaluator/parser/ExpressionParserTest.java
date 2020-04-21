@@ -16,33 +16,33 @@ public class ExpressionParserTest {
 
     @Test
     public void evaluateTernaryExpression_withDifferentDataSet_forSlab1() {
-        String expr = "IF ( ( Salary <= 250000 ) , 0.0 , MIN ( 250000.0 , ( Salary - 250000.0 ) ) * 5.0 / 100.0 )";
+        String expr = "IF ( ( $Salary$ <= 250000 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )";
         Expression expression = ExpressionParser.parse(expr);
 
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", 250000));
-        assertResult(expression, 7500.0d, ImmutableMap.of("Salary", 400000));
-        assertResult(expression, 12500.0d, ImmutableMap.of("Salary", 600000));
+        assertResult(expression, 0.0d, ImmutableMap.of("$Salary$", 250000));
+        assertResult(expression, 7500.0d, ImmutableMap.of("$Salary$", 400000));
+        assertResult(expression, 12500.0d, ImmutableMap.of("$Salary$", 600000));
 
     }
 
     @Test
     public void evaluateTernaryExpression_withDifferentDataSet_forSlab2() {
-        String expr = "IF ( ( Salary > 500000 ) , ( MIN ( 500000 , ( Salary - 500000 ) ) * 20 / 100 ) , 0 )";
+        String expr = "IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )";
         Expression expression = ExpressionParser.parse(expr);
 
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", 400000));
-        assertResult(expression, 60000.0d, ImmutableMap.of("Salary", 800000));
-        assertResult(expression, 100000.0d, ImmutableMap.of("Salary", 1100000));
+        assertResult(expression, 0.0d, ImmutableMap.of("$Salary$", 400000));
+        assertResult(expression, 60000.0d, ImmutableMap.of("$Salary$", 800000));
+        assertResult(expression, 100000.0d, ImmutableMap.of("$Salary$", 1100000));
 
     }
 
     @Test
     public void evaluateTernaryExpression_withDifferentDataSet_forSlab3() {
-        String expr = "IF ( ( Salary > 1000000 ) , ( ( Salary - 1000000 ) * 30 / 100 ) , 0 )";
+        String expr = "IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )";
         Expression expression = ExpressionParser.parse(expr);
 
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", 800000));
-        assertResult(expression, 120000.0d, ImmutableMap.of("Salary", 1400000));
+        assertResult(expression, 0.0d, ImmutableMap.of("$Salary$", 800000));
+        assertResult(expression, 120000.0d, ImmutableMap.of("$Salary$", 1400000));
 
     }
 
@@ -50,7 +50,7 @@ public class ExpressionParserTest {
     public void evaluateSimpleGreaterThanExpression() {
         String expr = "2 > 3";
         Expression expression = ExpressionParser.parse(expr);
-        Visitor<Boolean> visitor = new ExpressionVisitor<>(ImmutableMap.of("Salary", 250000));
+        Visitor<Boolean> visitor = new ExpressionVisitor<>(ImmutableMap.of("$Salary$", 250000));
 
         assertFalse(visitor.visit(expression));
     }
@@ -60,7 +60,7 @@ public class ExpressionParserTest {
         String expr = "DATE_DIFF ( 14-04-2020 , 12-04-2020 )";
         Expression expression = ExpressionParser.parse(expr);
 
-        Visitor<Long> visitor = new ExpressionVisitor<>(ImmutableMap.of("Salary", 250000));
+        Visitor<Long> visitor = new ExpressionVisitor<>(ImmutableMap.of("$Salary$", 250000));
 
         assertEquals((Long) 2L, visitor.visit(expression));
     }

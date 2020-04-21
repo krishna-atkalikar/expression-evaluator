@@ -35,13 +35,13 @@ public class InfixToPostfixTokenizerTest {
 
     @Test
     public void complexExpressionWithFunction() {
-        assertEquals("250000.0 $Salary$ 250000.0 - MIN 5.0 * 100.0 /", getTokenAsString("MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0"));
+        assertEquals("250000.0 Salary 250000.0 - MIN 5.0 * 100.0 /", getTokenAsString("MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0"));
     }
 
     @Test
     public void complexExpressionWithTernaryExpression() {
         String input = "IF ( ( $Salary$ <= 250000.0 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )";
-        String expected = "$Salary$ 250000.0 <= 0.0 250000.0 $Salary$ 250000.0 - MIN 5.0 * 100.0 / IF";
+        String expected = "Salary 250000.0 <= 0.0 250000.0 Salary 250000.0 - MIN 5.0 * 100.0 / IF";
 
         assertEquals(expected, getTokenAsString(input));
     }
@@ -49,7 +49,7 @@ public class InfixToPostfixTokenizerTest {
     @Test
     public void testSlab2Expression() {
         String input = "IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )";
-        String expected = "$Salary$ 500000 > 500000 $Salary$ 500000 - MIN 20 * 100 / 0 IF";
+        String expected = "Salary 500000 > 500000 Salary 500000 - MIN 20 * 100 / 0 IF";
 
         assertEquals(expected, getTokenAsString(input));
     }
@@ -57,7 +57,7 @@ public class InfixToPostfixTokenizerTest {
     @Test
     public void slab3ExpressionTest() {
         String input = "IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )";
-        String expected = "$Salary$ 1000000 > $Salary$ 1000000 - 30 * 100 / 0 IF";
+        String expected = "Salary 1000000 > Salary 1000000 - 30 * 100 / 0 IF";
 
         assertEquals(expected, getTokenAsString(input));
     }
@@ -65,7 +65,7 @@ public class InfixToPostfixTokenizerTest {
     @Test
     public void arithmeticWithLogicalExpression() {
         String input = "$Salary$ < 10 + 5";
-        String expected = "$Salary$ 10 5 + <";
+        String expected = "Salary 10 5 + <";
 
         assertEquals(expected, getTokenAsString(input));
     }

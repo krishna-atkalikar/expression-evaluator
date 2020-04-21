@@ -71,7 +71,7 @@ public class InfixToPostfixTokenizer {
                 tokensToReturn.add(new DateToken(token));
             } else if (token.matches(VAR_NAME)) {
                 tokensToReturn.add(new VariableToken(token));
-            } else {
+            } else if (!token.equalsIgnoreCase(",")) {
                 tokensToReturn.add(new ConstantToken(token));
             }
             tokensRemaining--;

@@ -18,9 +18,15 @@ import static com.evaluator.factory.Expressions.*;
  */
 public class ExpressionBuilder {
 
-    public static Expression build(List<Token> list) {
+    /**
+     * Builds expression from given tokens. To get well a formed expression tokens needs to be postfix order.
+     *
+     * @param tokens list of tokens
+     * @return a well formed expression that is ready for evaluation.
+     */
+    public static Expression build(List<Token> tokens) {
         Stack<Expression> expressions = new Stack<>();
-        for (Token token : list) {
+        for (Token token : tokens) {
             if (token.isVariableToken()) {
                 expressions.push(param(token.getToken()));
             } else if (token.isDateToken()) {

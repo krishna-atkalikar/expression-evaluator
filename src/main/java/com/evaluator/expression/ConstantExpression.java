@@ -3,6 +3,8 @@ package com.evaluator.expression;
 import com.evaluator.visitor.Visitor;
 
 /**
+ * Represents a constant value expression. For eg. for constant integer 10, 2, 5 etc or any other value.
+ *
  * @author shrikrushna on 2020-04-16
  */
 public class ConstantExpression implements Expression {

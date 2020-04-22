@@ -4,6 +4,8 @@ import com.evaluator.operator.TernaryOperator;
 import com.evaluator.visitor.Visitor;
 
 /**
+ * Represents a ternary expression.
+ *
  * @author shrikrushna on 2020-04-18
  */
 public class TernaryExpression implements Expression {

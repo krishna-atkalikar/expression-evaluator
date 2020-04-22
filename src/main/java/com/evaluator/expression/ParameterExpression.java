@@ -3,6 +3,8 @@ package com.evaluator.expression;
 import com.evaluator.visitor.Visitor;
 
 /**
+ * Represents a Parameter expression. This is name of the parameter present in expression.
+ *
  * @author shrikrushna on 2020-04-19
  */
 public class ParameterExpression implements Expression {

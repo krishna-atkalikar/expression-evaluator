@@ -8,6 +8,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.function.BiFunction;
 
 /**
+ * An enum where all the binary operators are present along with their attributes and necessary details.
+ *
  * @author shrikrushna on 2020-04-21
  */
 public enum BinaryOperator implements Operator {

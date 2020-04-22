@@ -1,108 +1,85 @@
 package com.evaluator.parser;
 
-import com.evaluator.InvalidDataSetException;
-import com.evaluator.expression.Expression;
-import com.evaluator.visitor.ExpressionVisitor;
-import com.evaluator.visitor.Visitor;
-import com.google.common.collect.ImmutableMap;
+import com.evaluator.parser.token.Token;
 import org.junit.Test;
 
-import static com.evaluator.factory.Expressions.constant;
+import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
- * @author shrikrushna on 2020-04-21
+ * @author shrikrushna on 2020-04-20
  */
 public class ExpressionParserTest {
 
     @Test
-    public void evaluateTernaryExpression_withDifferentDataSet_forSlab1() {
-        String expr = "IF ( ( $Salary$ <= 250000 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )";
-        Expression expression = ExpressionParser.parse(expr);
-
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", constant(250000)));
-        assertResult(expression, 7500.0d, ImmutableMap.of("Salary", constant(400000)));
-        assertResult(expression, 12500.0d, ImmutableMap.of("Salary", constant(600000)));
-
+    public void simpleBinaryExpression() {
+        String expr = "1 + 2";
+        assertEquals("1 2 +", getTokenAsString(expr));
     }
 
     @Test
-    public void evaluateTernaryExpression_withDifferentDataSet_forSlab2() {
-        String expr = "IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )";
-        Expression expression = ExpressionParser.parse(expr);
-
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", constant(400000)));
-        assertResult(expression, 60000.0d, ImmutableMap.of("Salary", constant(800000)));
-        assertResult(expression, 100000.0d, ImmutableMap.of("Salary", constant(1100000)));
-
+    public void simpleExpressionWithTwoOperator() {
+        assertEquals("1 2 3 * +", getTokenAsString("1 + 2 * 3"));
     }
 
     @Test
-    public void evaluateTernaryExpression_withDifferentDataSet_forSlab3() {
-        String expr = "IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )";
-        Expression expression = ExpressionParser.parse(expr);
-
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", constant(800000)));
-        assertResult(expression, 120000.0d, ImmutableMap.of("Salary", constant(1400000)));
-
+    public void simpleExpressionWithTwoOperatorAndParenthesis() {
+        assertEquals("1 2 + 3 *", getTokenAsString("( 1 + 2 ) * 3"));
     }
 
     @Test
-    public void totalTaxTest() {
-
-        Expression slab1Exp = ExpressionParser.parse("IF ( ( $Salary$ <= 250000 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )");
-        Expression slab2Expr = ExpressionParser.parse("IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )");
-        Expression slab3Expr = ExpressionParser.parse("IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )");
-        Expression cessExpr = ExpressionParser.parse("( $Slab1$ + $Slab2$ + $Slab3$ ) * 4 / 100");
-
-        Visitor<Double> totalTaxVisitor = new ExpressionVisitor<>(ImmutableMap.of("Slab1", slab1Exp,
-                "Slab2", slab2Expr,
-                "Slab3", slab3Expr,
-                "Salary", constant(1400000),
-                "Cess", cessExpr));
-
-        Expression totalTaxExpr = ExpressionParser.parse("$Slab1$ + $Slab2$ + $Slab3$ + $Cess$");
-
-        assertEquals((Double) 241800.0, totalTaxVisitor.visit(totalTaxExpr));
-    }
-
-    @Test(expected = InvalidDataSetException.class)
-    public void incompleteDataSet_throwsInvalidDataSetException() {
-        Expression expr = ExpressionParser.parse("$Salary$ > 10 + 5");
-        Visitor<Boolean> visitor = new ExpressionVisitor<>(ImmutableMap.of("baseSalary", constant(25)));
-        Boolean visit = visitor.visit(expr);
+    public void expressionWithFunction() {
+        assertEquals("1 3 3 * + 2 3 pow +", getTokenAsString("1 + 3 * 3 + pow ( 2 , 3 )"));
     }
 
     @Test
-    public void evaluateSimpleGreaterThanExpression() {
-        Expression expression = ExpressionParser.parse("2 > 3");
-        Visitor<Boolean> visitor = new ExpressionVisitor<>();
-
-        assertFalse(visitor.visit(expression));
+    public void complexExpressionWithFunction() {
+        assertEquals("250000.0 Salary 250000.0 - MIN 5.0 * 100.0 /", getTokenAsString("MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0"));
     }
 
     @Test
-    public void evaluateDateExpression() {
-        Expression expression = ExpressionParser.parse("DATE_DIFF ( 14-04-2020 , 12-04-2020 )");
+    public void complexExpressionWithTernaryExpression() {
+        String input = "IF ( ( $Salary$ <= 250000.0 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )";
+        String expected = "Salary 250000.0 <= 0.0 250000.0 Salary 250000.0 - MIN 5.0 * 100.0 / IF";
 
-        Visitor<Long> visitor = new ExpressionVisitor<>();
-
-        assertEquals((Long) 2L, visitor.visit(expression));
+        assertEquals(expected, getTokenAsString(input));
     }
 
     @Test
-    public void cube() {
-        Expression expr = ExpressionParser.parse("CUBE ( 3 )");
+    public void testSlab2Expression() {
+        String input = "IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )";
+        String expected = "Salary 500000 > 500000 Salary 500000 - MIN 20 * 100 / 0 IF";
 
-        Visitor<Double> visitor = new ExpressionVisitor<>();
-
-        System.out.println(visitor.visit(expr));
+        assertEquals(expected, getTokenAsString(input));
     }
 
-    private void assertResult(Expression expression, Double expected, ImmutableMap<String, Expression> paramToValueMap) {
-        Visitor<Double> visitor = new ExpressionVisitor<>(paramToValueMap);
-        Double visit = visitor.visit(expression);
-        assertEquals(expected, visit);
+    @Test
+    public void slab3ExpressionTest() {
+        String input = "IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )";
+        String expected = "Salary 1000000 > Salary 1000000 - 30 * 100 / 0 IF";
+
+        assertEquals(expected, getTokenAsString(input));
+    }
+
+    @Test
+    public void arithmeticWithLogicalExpression() {
+        String input = "$Salary$ < 10 + 5";
+        String expected = "Salary 10 5 + <";
+
+        assertEquals(expected, getTokenAsString(input));
+    }
+
+    @Test
+    public void dateFunction() {
+        String input = "DATE_DIFF ( 12-04-2020 , 12-04-2020 )";
+        String expected = "12-04-2020 12-04-2020 DATE_DIFF";
+
+        assertEquals(expected, getTokenAsString(input));
+    }
+
+    private String getTokenAsString(String expr) {
+        return ExpressionParser.parse(expr).stream()
+                .map(Token::toString)
+                .collect(joining(" "));
     }
 }

@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 import static java.util.Arrays.stream;
 
 /**
+ * Utility class for managing all the interactions with Operators.
+ *
  * @author shrikrushna on 2020-04-18
  */
 public class Operators {

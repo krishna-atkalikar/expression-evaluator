@@ -6,6 +6,8 @@ import com.evaluator.factory.Expressions;
 import java.util.function.Function;
 
 /**
+ * An enum where all the unary operators are present along with their attributes and necessary details.
+ *
  * @author shrikrushna on 2020-04-22
  */
 public enum UnaryOperator implements Operator {

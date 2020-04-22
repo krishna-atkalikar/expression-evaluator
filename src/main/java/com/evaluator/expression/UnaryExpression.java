@@ -4,6 +4,8 @@ import com.evaluator.operator.UnaryOperator;
 import com.evaluator.visitor.Visitor;
 
 /**
+ * Represents a unary expression.
+ *
  * @author shrikrushna on 2020-04-19
  */
 public class UnaryExpression implements Expression {

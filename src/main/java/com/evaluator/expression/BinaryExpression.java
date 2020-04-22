@@ -4,6 +4,8 @@ import com.evaluator.operator.BinaryOperator;
 import com.evaluator.visitor.Visitor;
 
 /**
+ * Represents a binary expression.
+ *
  * @author shrikrushna on 2020-04-11
  */
 public class BinaryExpression implements Expression {

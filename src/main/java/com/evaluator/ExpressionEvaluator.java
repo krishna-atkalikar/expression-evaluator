@@ -25,7 +25,8 @@ public class ExpressionEvaluator<T> {
      * @return
      */
     public T evaluate(String expr) {
-        Expression expression = getExpression(expr);
+        List<Token> tokens = ExpressionParser.parse(expr);
+        Expression expression = ExpressionBuilder.build(tokens);
         Visitor<T> visitor = new ExpressionVisitor<>();
         return visitor.visit(expression);
     }
@@ -38,19 +39,10 @@ public class ExpressionEvaluator<T> {
      * @return result of expression evaluation.
      */
     public T evaluate(String expr, Map<String, Expression> dataSet) {
-        Expression expression = getExpression(expr);
+        List<Token> tokens = ExpressionParser.parse(expr);
+        Expression expression = ExpressionBuilder.build(tokens);
         Visitor<T> visitor = new ExpressionVisitor<>(dataSet);
         return visitor.visit(expression);
     }
 
-    /**
-     * Creates an expression from string.
-     *
-     * @param expr
-     * @return
-     */
-    public Expression getExpression(String expr) {
-        List<Token> tokens = ExpressionParser.parse(expr);
-        return ExpressionBuilder.build(tokens);
-    }
 }

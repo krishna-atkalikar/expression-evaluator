@@ -48,10 +48,10 @@ public class ExpressionEvaluatorTest {
     public void totalTaxTest() {
         ExpressionEvaluator<Double> expressionEvaluator = new ExpressionEvaluator<>();
 
-        Expression slab1Exp = expressionEvaluator.getExpression("IF ( ( $Salary$ <= 250000 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )");
-        Expression slab2Expr = expressionEvaluator.getExpression("IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )");
-        Expression slab3Expr = expressionEvaluator.getExpression("IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )");
-        Expression cessExpr = expressionEvaluator.getExpression("( $Slab1$ + $Slab2$ + $Slab3$ ) * 4 / 100");
+        Expression slab1Exp = ExpressionBuilder.build("IF ( ( $Salary$ <= 250000 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )");
+        Expression slab2Expr = ExpressionBuilder.build("IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )");
+        Expression slab3Expr = ExpressionBuilder.build("IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )");
+        Expression cessExpr = ExpressionBuilder.build("( $Slab1$ + $Slab2$ + $Slab3$ ) * 4 / 100");
 
         String expr = "$Slab1$ + $Slab2$ + $Slab3$ + $Cess$";
 

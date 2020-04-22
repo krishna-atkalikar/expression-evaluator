@@ -18,6 +18,18 @@ import static com.evaluator.factory.Expressions.*;
  */
 public class ExpressionBuilder {
 
+
+    /**
+     * Creates an expression from string.
+     *
+     * @param expr
+     * @return
+     */
+    public static Expression build(String expr) {
+        List<Token> tokens = ExpressionParser.parse(expr);
+        return ExpressionBuilder.build(tokens);
+    }
+
     /**
      * Builds expression from given tokens. To get well a formed expression tokens needs to be postfix order.
      *

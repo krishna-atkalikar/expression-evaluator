@@ -16,11 +16,11 @@ public class ExpressionEvaluator<T> {
      * Accepts an expression and data set to be evaluated. and returns the result of expression.
      *
      * @param expression expression to be evaluated.
-     * @param dataset    parameter name to it value map.
+     * @param dataSet    parameter name to it value map.
      * @return result of expression evaluation.
      */
-    public T evaluate(Expression expression, ImmutableMap<String, Object> dataset) {
-        Visitor<T> visitor = new ExpressionVisitor<>(dataset);
+    public T evaluate(Expression expression, ImmutableMap<String, Expression> dataSet) {
+        Visitor<T> visitor = new ExpressionVisitor<>(dataSet);
         return visitor.visit(expression);
     }
 

@@ -12,10 +12,10 @@ import java.util.Map;
  */
 public class ExpressionVisitor<T> implements Visitor<T> {
 
-    private Map<String, Object> context = new HashMap<>();
+    private Map<String, Expression> dataSet = new HashMap<>();
 
-    public ExpressionVisitor(Map<String, Object> context) {
-        this.context = context;
+    public ExpressionVisitor(Map<String, Expression> dataSet) {
+        this.dataSet = dataSet;
     }
 
     public ExpressionVisitor() {
@@ -56,13 +56,9 @@ public class ExpressionVisitor<T> implements Visitor<T> {
 
     @Override public T visit(ParameterExpression parameterExpression) {
         String paramName = parameterExpression.getParamName();
-        if (!context.containsKey(paramName)) {
+        if (!dataSet.containsKey(paramName)) {
             throw new InvalidDataSetException(parameterExpression);
         }
-        Object o = context.get(paramName);
-        if (o instanceof Expression)
-            return visit((Expression) o);
-        else
-            return (T) o;
+        return visit(dataSet.get(paramName));
     }
 }

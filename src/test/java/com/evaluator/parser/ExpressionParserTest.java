@@ -7,6 +7,7 @@ import com.evaluator.visitor.Visitor;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
+import static com.evaluator.factory.Expressions.constant;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -20,9 +21,9 @@ public class ExpressionParserTest {
         String expr = "IF ( ( $Salary$ <= 250000 ) , 0.0 , MIN ( 250000.0 , ( $Salary$ - 250000.0 ) ) * 5.0 / 100.0 )";
         Expression expression = ExpressionParser.parse(expr);
 
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", 250000));
-        assertResult(expression, 7500.0d, ImmutableMap.of("Salary", 400000));
-        assertResult(expression, 12500.0d, ImmutableMap.of("Salary", 600000));
+        assertResult(expression, 0.0d, ImmutableMap.of("Salary", constant(250000)));
+        assertResult(expression, 7500.0d, ImmutableMap.of("Salary", constant(400000)));
+        assertResult(expression, 12500.0d, ImmutableMap.of("Salary", constant(600000)));
 
     }
 
@@ -31,9 +32,9 @@ public class ExpressionParserTest {
         String expr = "IF ( ( $Salary$ > 500000 ) , ( MIN ( 500000 , ( $Salary$ - 500000 ) ) * 20 / 100 ) , 0 )";
         Expression expression = ExpressionParser.parse(expr);
 
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", 400000));
-        assertResult(expression, 60000.0d, ImmutableMap.of("Salary", 800000));
-        assertResult(expression, 100000.0d, ImmutableMap.of("Salary", 1100000));
+        assertResult(expression, 0.0d, ImmutableMap.of("Salary", constant(400000)));
+        assertResult(expression, 60000.0d, ImmutableMap.of("Salary", constant(800000)));
+        assertResult(expression, 100000.0d, ImmutableMap.of("Salary", constant(1100000)));
 
     }
 
@@ -42,8 +43,8 @@ public class ExpressionParserTest {
         String expr = "IF ( ( $Salary$ > 1000000 ) , ( ( $Salary$ - 1000000 ) * 30 / 100 ) , 0 )";
         Expression expression = ExpressionParser.parse(expr);
 
-        assertResult(expression, 0.0d, ImmutableMap.of("Salary", 800000));
-        assertResult(expression, 120000.0d, ImmutableMap.of("Salary", 1400000));
+        assertResult(expression, 0.0d, ImmutableMap.of("Salary", constant(800000)));
+        assertResult(expression, 120000.0d, ImmutableMap.of("Salary", constant(1400000)));
 
     }
 
@@ -58,7 +59,7 @@ public class ExpressionParserTest {
         Visitor<Double> totalTaxVisitor = new ExpressionVisitor<>(ImmutableMap.of("Slab1", slab1Exp,
                 "Slab2", slab2Expr,
                 "Slab3", slab3Expr,
-                "Salary", 1400000,
+                "Salary", constant(1400000),
                 "Cess", cessExpr));
 
         Expression totalTaxExpr = ExpressionParser.parse("$Slab1$ + $Slab2$ + $Slab3$ + $Cess$");
@@ -69,7 +70,7 @@ public class ExpressionParserTest {
     @Test(expected = InvalidDataSetException.class)
     public void incompleteDataSet_throwsInvalidDataSetException() {
         Expression expr = ExpressionParser.parse("$Salary$ > 10 + 5");
-        Visitor<Boolean> visitor = new ExpressionVisitor<>(ImmutableMap.of("baseSalary", "25"));
+        Visitor<Boolean> visitor = new ExpressionVisitor<>(ImmutableMap.of("baseSalary", constant(25)));
         Boolean visit = visitor.visit(expr);
     }
 
@@ -90,7 +91,16 @@ public class ExpressionParserTest {
         assertEquals((Long) 2L, visitor.visit(expression));
     }
 
-    private void assertResult(Expression expression, Double expected, ImmutableMap<String, Object> paramToValueMap) {
+    @Test
+    public void cube() {
+        Expression expr = ExpressionParser.parse("CUBE ( 3 )");
+
+        Visitor<Double> visitor = new ExpressionVisitor<>();
+
+        System.out.println(visitor.visit(expr));
+    }
+
+    private void assertResult(Expression expression, Double expected, ImmutableMap<String, Expression> paramToValueMap) {
         Visitor<Double> visitor = new ExpressionVisitor<>(paramToValueMap);
         Double visit = visitor.visit(expression);
         assertEquals(expected, visit);

@@ -1,15 +1,39 @@
 package com.evaluator.expression;
 
+import com.evaluator.operator.UnaryOperator;
+import com.evaluator.visitor.Visitor;
+
 /**
- * @author shrikrushna on 2020-04-11
+ * @author shrikrushna on 2020-04-19
  */
-//public class UnaryExpression<T, R> extends Expression<T, R> {
-//
-//    ValueExpression<T, T> valueExpression;
-//    Operator<>
-//
-//    @Override
-//    public R evaluate() {
-//        return null;
-//    }
-//}
+public class UnaryExpression implements Expression {
+
+    private Expression expression;
+    private UnaryOperator unaryOperator;
+
+    public UnaryExpression(Expression expression, UnaryOperator unaryOperator) {
+        this.expression = expression;
+        this.unaryOperator = unaryOperator;
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public UnaryOperator getUnaryOperator() {
+        return unaryOperator;
+    }
+
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return "UnaryExpression{" +
+                "expression=" + expression +
+                ", unaryOperator=" + unaryOperator +
+                '}';
+    }
+}

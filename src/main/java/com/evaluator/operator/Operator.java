@@ -1,8 +1,13 @@
 package com.evaluator.operator;
 
 /**
- * @author shrikrushna on 2020-04-11
+ * @author shrikrushna on 2020-04-21
  */
-public abstract class Operator<T, R> implements Visitor<T, R> {
+public interface Operator {
 
+    String getSymbol();
+
+    int getPrecedence();
+
+    boolean isLeftAssociative();
 }

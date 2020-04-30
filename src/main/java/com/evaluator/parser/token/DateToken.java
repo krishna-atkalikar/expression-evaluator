@@ -1,7 +1,11 @@
 package com.evaluator.parser.token;
 
+import com.evaluator.expression.Expression;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static com.evaluator.factory.Expressions.constant;
 
 /**
  * Represents a Date token
@@ -25,5 +29,10 @@ public class DateToken extends Token {
     @Override
     public boolean isDateToken() {
         return true;
+    }
+
+    @Override
+    public Expression toExpression(Expression... expressions) {
+        return constant(date);
     }
 }

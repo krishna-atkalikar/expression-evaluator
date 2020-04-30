@@ -1,5 +1,9 @@
 package com.evaluator.parser.token;
 
+import com.evaluator.expression.Expression;
+
+import static com.evaluator.factory.Expressions.constant;
+
 /**
  * Represents a constant token
  *
@@ -14,5 +18,10 @@ public class ConstantToken extends Token {
     @Override
     public boolean isConstantToken() {
         return true;
+    }
+
+    @Override
+    public Expression toExpression(Expression... expressions) {
+        return constant(getToken());
     }
 }

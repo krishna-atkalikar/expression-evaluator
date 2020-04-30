@@ -34,8 +34,8 @@ public class ExpressionEvaluator<T> {
     /**
      * Accepts an expression and data set to be evaluated. and returns the result of expression.
      *
-     * @param expr expression to be evaluated.
-     * @param dataSet    parameter name to it value map.
+     * @param expr    expression to be evaluated.
+     * @param dataSet parameter name to it value map.
      * @return result of expression evaluation.
      */
     public T evaluate(String expr, Map<String, Expression> dataSet) {

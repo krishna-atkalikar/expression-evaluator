@@ -1,11 +1,13 @@
 package com.evaluator.parser.token;
 
+import com.evaluator.expression.Expression;
+
 /**
  * Class that represents token in an expression.
  *
  * @author shrikrushna on 2020-04-19
  */
-public class Token {
+public abstract class Token {
 
     private final String token;
 
@@ -33,9 +35,7 @@ public class Token {
         return false;
     }
 
-    public DateToken toDateToken() {
-        return (DateToken) this;
-    }
+    public abstract Expression toExpression(Expression... expressions);
 
     @Override public String toString() {
         return token;

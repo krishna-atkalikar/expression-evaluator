@@ -29,7 +29,7 @@ public class ExpressionParserTest {
 
     @Test
     public void expressionWithFunction() {
-        assertEquals("1 3 3 * + 2 3 pow +", getTokenAsString("1 + 3 * 3 + pow ( 2 , 3 )"));
+        assertEquals("1 3 3 * + 2 3 POW +", getTokenAsString("1 + 3 * 3 + POW ( 2 , 3 )"));
     }
 
     @Test

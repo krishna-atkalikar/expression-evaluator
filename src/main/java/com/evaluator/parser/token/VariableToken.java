@@ -1,5 +1,9 @@
 package com.evaluator.parser.token;
 
+import com.evaluator.expression.Expression;
+
+import static com.evaluator.factory.Expressions.param;
+
 /**
  * Represents a variable token
  *
@@ -14,5 +18,10 @@ public class VariableToken extends Token {
     @Override
     public boolean isVariableToken() {
         return true;
+    }
+
+    @Override
+    public Expression toExpression(Expression... expressions) {
+        return param(getToken());
     }
 }

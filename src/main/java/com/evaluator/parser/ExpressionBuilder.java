@@ -3,13 +3,10 @@ package com.evaluator.parser;
 import com.evaluator.InvalidExpressionException;
 import com.evaluator.expression.Expression;
 import com.evaluator.operator.Operators;
-import com.evaluator.parser.token.DateToken;
 import com.evaluator.parser.token.Token;
 
 import java.util.List;
 import java.util.Stack;
-
-import static com.evaluator.factory.Expressions.*;
 
 /**
  * Expression builder which takes tokens as input and output a well formed expression that can be evaluated.
@@ -37,32 +34,111 @@ public class ExpressionBuilder {
      * @return a well formed expression that is ready for evaluation.
      */
     public static Expression build(List<Token> tokens) {
-        Stack<Expression> expressions = new Stack<>();
-        for (Token token : tokens) {
-            if (token.isVariableToken()) {
-                expressions.push(param(token.getToken()));
-            } else if (token.isDateToken()) {
-                DateToken dateToken = token.toDateToken();
-                expressions.push(constant(dateToken.getDate()));
-            } else if (token.isConstantToken()) {
-                expressions.push(constant(token.getToken()));
-            } else if (token.isOperatorToken()) {
-                if (Operators.isUnary(token.getToken())) {
-                    expressions.push(Operators.unaryExprBuilderFunction(token.getToken()).apply(expressions.pop()));
+        return new ExpressionMaker(tokens).invoke(tokens);
+    }
+
+    private static class ExpressionMaker {
+
+        private final TokenHandler tokenHandler;
+        private Stack<Expression> expressions;
+
+        public ExpressionMaker(List<Token> tokens) {
+            expressions = new Stack<>();
+            tokenHandler = new GenericTokenHandler(
+                    new UnaryOperatorTokenHandler(
+                            new BinaryOperatorTokenHandler(
+                                    new TernaryOperatorTokenHandler())));
+        }
+
+        public Expression invoke(List<Token> tokens) {
+            tokens.forEach(tokenHandler::handle);
+            throwIfExpressionSizeIsNotOne();
+            return expressions.pop();
+        }
+
+        private void throwIfExpressionSizeIsNotOne() {
+            if (expressions.size() != 1) {
+                throw new InvalidExpressionException("Invalid expression." + expressions);
+            }
+        }
+
+        private interface TokenHandler {
+
+            void handle(Token token);
+        }
+
+        private abstract class AbstractHandler implements TokenHandler {
+
+            protected TokenHandler next;
+
+            public AbstractHandler(TokenHandler next) {
+                this.next = next;
+            }
+
+            protected TokenHandler setNext(TokenHandler next) {
+                this.next = next;
+                return next;
+            }
+        }
+
+        private class GenericTokenHandler extends AbstractHandler {
+
+            public GenericTokenHandler(TokenHandler next) {
+                super(next);
+            }
+
+            @Override
+            public void handle(Token token) {
+                if (!token.isOperatorToken()) {
+                    expressions.push(token.toExpression());
                 } else {
-                    Expression right = expressions.pop();
-                    Expression left = expressions.pop();
-                    if (Operators.isBinary(token.getToken())) {
-                        expressions.push(Operators.binaryExprBuilderFunction(token.getToken()).apply(left, right));
-                    } else if (Operators.isTernary(token.getToken())) {
-                        expressions.push(iff(expressions.pop(), left, right));
-                    }
+                    next.handle(token);
                 }
             }
         }
-        if (expressions.size() != 1) {
-            throw new InvalidExpressionException("Invalid expression." + expressions);
+
+        private class UnaryOperatorTokenHandler extends AbstractHandler {
+
+            public UnaryOperatorTokenHandler(TokenHandler next) {
+                super(next);
+            }
+
+            @Override
+            public void handle(Token token) {
+                if (Operators.isUnary(token.getToken())) {
+                    expressions.push(token.toExpression(expressions.pop()));
+                } else {
+                    next.handle(token);
+                }
+            }
         }
-        return expressions.pop();
+
+        private class BinaryOperatorTokenHandler extends AbstractHandler {
+
+            public BinaryOperatorTokenHandler(TokenHandler next) {
+                super(next);
+            }
+
+            @Override
+            public void handle(Token token) {
+                if (Operators.isBinary(token.getToken())) {
+                    Expression right = expressions.pop();
+                    Expression left = expressions.pop();
+                    expressions.push(token.toExpression(left, right));
+                } else {
+                    next.handle(token);
+                }
+            }
+        }
+
+        private class TernaryOperatorTokenHandler implements TokenHandler {
+
+            @Override
+            public void handle(Token token) {
+                Expression right = expressions.pop();
+                Expression left = expressions.pop();
+                expressions.push(token.toExpression(expressions.pop(), left, right));
+            }
+        }
     }
 }

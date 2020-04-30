@@ -1,4 +1,4 @@
-package com.evaluator.factory;
+package com.evaluator.util;
 
 import com.evaluator.expression.*;
 import com.evaluator.operator.BinaryOperator;
@@ -6,7 +6,7 @@ import com.evaluator.operator.TernaryOperator;
 import com.evaluator.operator.UnaryOperator;
 
 /**
- * Factory class to create different expressions based on type.
+ * A utility class to create different expressions.
  *
  * @author shrikrushna on 2020-04-16
  */

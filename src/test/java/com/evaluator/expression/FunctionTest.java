@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static com.evaluator.factory.Expressions.*;
+import static com.evaluator.util.Expressions.*;
 import static org.junit.Assert.assertEquals;
 
 /**

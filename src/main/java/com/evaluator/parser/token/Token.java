@@ -37,7 +37,8 @@ public abstract class Token {
 
     public abstract Expression toExpression(Expression... expressions);
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return token;
     }
 }

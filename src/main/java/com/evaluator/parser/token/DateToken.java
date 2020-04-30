@@ -5,7 +5,7 @@ import com.evaluator.expression.Expression;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static com.evaluator.factory.Expressions.constant;
+import static com.evaluator.util.Expressions.constant;
 
 /**
  * Represents a Date token

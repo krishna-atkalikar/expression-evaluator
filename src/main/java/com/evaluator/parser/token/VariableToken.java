@@ -2,7 +2,7 @@ package com.evaluator.parser.token;
 
 import com.evaluator.expression.Expression;
 
-import static com.evaluator.factory.Expressions.param;
+import static com.evaluator.util.Expressions.param;
 
 /**
  * Represents a variable token

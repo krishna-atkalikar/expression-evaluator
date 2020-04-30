@@ -4,7 +4,7 @@ import com.evaluator.visitor.ExpressionVisitor;
 import com.evaluator.visitor.Visitor;
 import org.junit.Test;
 
-import static com.evaluator.factory.Expressions.*;
+import static com.evaluator.util.Expressions.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

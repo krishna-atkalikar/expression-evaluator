@@ -3,7 +3,7 @@ package com.evaluator.parser.token;
 import com.evaluator.expression.Expression;
 import com.evaluator.operator.Operators;
 
-import static com.evaluator.factory.Expressions.iff;
+import static com.evaluator.util.Expressions.iff;
 
 /**
  * Represents an Operator token

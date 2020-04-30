@@ -1,7 +1,7 @@
 package com.evaluator.operator;
 
 import com.evaluator.expression.Expression;
-import com.evaluator.factory.Expressions;
+import com.evaluator.util.Expressions;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

@@ -6,7 +6,7 @@ import com.evaluator.expression.Expression;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
-import static com.evaluator.factory.Expressions.constant;
+import static com.evaluator.util.Expressions.constant;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 

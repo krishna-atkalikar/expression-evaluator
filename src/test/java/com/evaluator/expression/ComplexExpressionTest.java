@@ -5,7 +5,7 @@ import com.evaluator.visitor.Visitor;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.evaluator.factory.Expressions.*;
+import static com.evaluator.util.Expressions.*;
 
 /**
  * @author shrikrushna on 2020-04-19

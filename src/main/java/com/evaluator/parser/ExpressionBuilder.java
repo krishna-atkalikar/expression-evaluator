@@ -15,7 +15,6 @@ import java.util.Stack;
  */
 public class ExpressionBuilder {
 
-
     /**
      * Creates an expression from string.
      *
@@ -34,7 +33,7 @@ public class ExpressionBuilder {
      * @return a well formed expression that is ready for evaluation.
      */
     public static Expression build(List<Token> tokens) {
-        return new ExpressionMaker(tokens).invoke(tokens);
+        return new ExpressionMaker().makeExpression(tokens);
     }
 
     private static class ExpressionMaker {
@@ -42,50 +41,47 @@ public class ExpressionBuilder {
         private final TokenHandler tokenHandler;
         private Stack<Expression> expressions;
 
-        public ExpressionMaker(List<Token> tokens) {
+        public ExpressionMaker() {
             expressions = new Stack<>();
-            tokenHandler = new GenericTokenHandler(
-                    new UnaryOperatorTokenHandler(
-                            new BinaryOperatorTokenHandler(
-                                    new TernaryOperatorTokenHandler())));
+            tokenHandler = new GenericTokenHandler();
+            tokenHandler.setNext(new UnaryOperatorTokenHandler())
+                    .setNext(new BinaryOperatorTokenHandler())
+                    .setNext(new TernaryOperatorTokenHandler());
         }
 
-        public Expression invoke(List<Token> tokens) {
+        public Expression makeExpression(List<Token> tokens) {
             tokens.forEach(tokenHandler::handle);
-            throwIfExpressionSizeIsNotOne();
+            throwIfExpressionIsNotCorrectlyFormed();
             return expressions.pop();
         }
 
-        private void throwIfExpressionSizeIsNotOne() {
+        private void throwIfExpressionIsNotCorrectlyFormed() {
             if (expressions.size() != 1) {
                 throw new InvalidExpressionException("Invalid expression." + expressions);
             }
         }
 
+        /**
+         * Handles token and based on type of token converts it to expression.
+         */
         private interface TokenHandler {
 
             void handle(Token token);
+
+            TokenHandler setNext(TokenHandler next);
         }
 
         private abstract class AbstractHandler implements TokenHandler {
 
             protected TokenHandler next;
 
-            public AbstractHandler(TokenHandler next) {
-                this.next = next;
-            }
-
-            protected TokenHandler setNext(TokenHandler next) {
+            public TokenHandler setNext(TokenHandler next) {
                 this.next = next;
                 return next;
             }
         }
 
         private class GenericTokenHandler extends AbstractHandler {
-
-            public GenericTokenHandler(TokenHandler next) {
-                super(next);
-            }
 
             @Override
             public void handle(Token token) {
@@ -99,10 +95,6 @@ public class ExpressionBuilder {
 
         private class UnaryOperatorTokenHandler extends AbstractHandler {
 
-            public UnaryOperatorTokenHandler(TokenHandler next) {
-                super(next);
-            }
-
             @Override
             public void handle(Token token) {
                 if (Operators.isUnary(token.getToken())) {
@@ -114,10 +106,6 @@ public class ExpressionBuilder {
         }
 
         private class BinaryOperatorTokenHandler extends AbstractHandler {
-
-            public BinaryOperatorTokenHandler(TokenHandler next) {
-                super(next);
-            }
 
             @Override
             public void handle(Token token) {
@@ -131,7 +119,7 @@ public class ExpressionBuilder {
             }
         }
 
-        private class TernaryOperatorTokenHandler implements TokenHandler {
+        private class TernaryOperatorTokenHandler extends AbstractHandler {
 
             @Override
             public void handle(Token token) {

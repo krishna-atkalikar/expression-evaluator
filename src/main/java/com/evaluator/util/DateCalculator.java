@@ -29,7 +29,7 @@ public class DateCalculator {
 			int addedDays = 0;
 			while (addedDays < daysToAdd) {
 				result = result.plusDays(1);
-				if (!isWeekend(result) || isHoliday(result)) {
+				if (!(isWeekend(result) || isHoliday(result))) {
 					++addedDays;
 				}
 			}

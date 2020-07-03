@@ -12,15 +12,19 @@ import com.evaluator.operator.UnaryOperator;
  */
 public class Expressions {
 
-    public static Expression add(Expression left, Expression right) {
-        return new BinaryExpression(left, right, BinaryOperator.ADD);
-    }
+	public static Expression createBinaryExpression(Expression left, Expression right, BinaryOperator binaryOperator) {
+		return new BinaryExpression(left, right, binaryOperator);
+	}
 
-    public static Expression sub(Expression left, Expression right) {
-        return new BinaryExpression(left, right, BinaryOperator.SUBTRACT);
-    }
+	public static Expression add(Expression left, Expression right) {
+		return new BinaryExpression(left, right, BinaryOperator.ADD);
+	}
 
-    public static Expression multiply(Expression left, Expression right) {
+	public static Expression sub(Expression left, Expression right) {
+		return new BinaryExpression(left, right, BinaryOperator.SUBTRACT);
+	}
+
+	public static Expression multiply(Expression left, Expression right) {
         return new BinaryExpression(left, right, BinaryOperator.MULTIPLICATION);
     }
 

@@ -15,23 +15,23 @@ import java.util.function.BiFunction;
 public enum BinaryOperator implements Operator {
 
 	ADD("+", 2, BinaryOperator::performAddition),
-	SUBTRACT("-", 2, (l, r) -> Double.valueOf(l.toString()) - Double.valueOf(r.toString())),
-	MULTIPLICATION("*", 3, (l, r) -> Double.valueOf(l.toString()) * Double.valueOf(r.toString())),
-	DIVISION("/", 3, (l, r) -> Double.valueOf(l.toString()) / Double.valueOf(r.toString())),
+	SUBTRACT("-", 2, (l, r) -> Double.parseDouble(l.toString()) - Double.parseDouble(r.toString())),
+	MULTIPLICATION("*", 3, (l, r) -> Double.parseDouble(l.toString()) * Double.parseDouble(r.toString())),
+	DIVISION("/", 3, (l, r) -> Double.parseDouble(l.toString()) / Double.parseDouble(r.toString())),
 
-	LT("<", 1, (l, r) -> Double.valueOf(l.toString()) < Double.valueOf(r.toString())),
-	LTE("<=", 1, (l, r) -> Double.valueOf(l.toString()) <= Double.valueOf(r.toString())),
-	GT(">", 1, (l, r) -> Double.valueOf(l.toString()) > Double.valueOf(r.toString())),
-	GTE(">=", 1, (l, r) -> Double.valueOf(l.toString()) >= Double.valueOf(r.toString())),
+	LT("<", 1, (l, r) -> Double.parseDouble(l.toString()) < Double.parseDouble(r.toString())),
+	LTE("<=", 1, (l, r) -> Double.parseDouble(l.toString()) <= Double.parseDouble(r.toString())),
+	GT(">", 1, (l, r) -> Double.parseDouble(l.toString()) > Double.parseDouble(r.toString())),
+	GTE(">=", 1, (l, r) -> Double.parseDouble(l.toString()) >= Double.parseDouble(r.toString())),
 	EQ("==", 1, (l, r) -> Double.valueOf(l.toString()).equals(Double.valueOf(r.toString()))),
 	NEQ("!=", 1, (l, r) -> !Double.valueOf(l.toString()).equals(Double.valueOf(r.toString()))),
 
-	AND("&&", 1, (l, r) -> Boolean.valueOf(l.toString()) && Boolean.valueOf(r.toString())),
-	OR("||", 1, (l, r) -> Boolean.valueOf(l.toString()) || Boolean.valueOf(r.toString())),
+	AND("&&", 1, (l, r) -> Boolean.parseBoolean(l.toString()) && Boolean.parseBoolean(r.toString())),
+	OR("||", 1, (l, r) -> Boolean.parseBoolean(l.toString()) || Boolean.parseBoolean(r.toString())),
 
 
-	POWER("POW", 4, (l, r) -> Math.pow(Double.valueOf(l.toString()), Double.valueOf(r.toString()))),
-	MIN("MIN", 4, (l, r) -> Math.min(Double.valueOf(l.toString()), Double.valueOf(r.toString()))),
+	POWER("POW", 4, (l, r) -> Math.pow(Double.parseDouble(l.toString()), Double.parseDouble(r.toString()))),
+	MIN("MIN", 4, (l, r) -> Math.min(Double.parseDouble(l.toString()), Double.parseDouble(r.toString()))),
 
 
 	DATE_DIFFERENCE("DATE_DIFF", 4, (l, r) -> ChronoUnit.DAYS.between((LocalDate) r, (LocalDate) l)),
@@ -54,7 +54,7 @@ public enum BinaryOperator implements Operator {
 
 	private static Object performAddition(Object l, Object r) {
 		try {
-			return Double.valueOf(l.toString()) + Double.valueOf(r.toString());
+			return Double.parseDouble(l.toString()) + Double.parseDouble(r.toString());
 		} catch (Exception ex) {
 			return l.toString() + r.toString();
 		}

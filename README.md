@@ -1,5 +1,7 @@
 # expression-evaluator
 
+Refer: https://deepwiki.com/krishna-atkalikar/expression-evaluator for detailed documentation and architecture.
+
 Expression evaluator can parse a string expression and evaluate it to get result. Entry point for this is ExpressionEvaluator.
 
 
